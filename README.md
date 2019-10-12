@@ -1,6 +1,4 @@
-===================================================================================
 #5 Monitorovanie volnej kapacity pracovnych miest s cielom zvysovat ich obsadenost
-===================================================================================
 
  - zavedenie technologie monitorovania obsadenosti pracovnych miest
  - meranie obsadenosti pracovnych miest v definovanych priestoroch a v case
