@@ -4,24 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <groupId>sk.tuke</groupId>
-	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.2.0.RELEASE</version>
+	<artifactId>sensor</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
-	<name>sensor-modules</name>
+	<name>sensor</name>
 	<description>Sensor module configuration pom</description>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.5.6.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<modules>
 		<module>SensorWebApi</module>
