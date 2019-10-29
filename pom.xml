@@ -11,6 +11,18 @@
 	<name>sensor-modules</name>
 	<description>Sensor module configuration pom</description>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>1.5.6.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<modules>
 		<module>SensorWebApi</module>
 	</modules>
