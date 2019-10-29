@@ -73,10 +73,10 @@
 				<version>2.2.0.RELEASE</version>
 
 				<configuration>
-					<mainClass>sk.tuke.SensorWebApi</mainClass>
+					<mainClass>sk.tuke.SensorWebApi.SensorWebApiApplication</mainClass>
 					<executable>true</executable>
 				</configuration>
-				
+
 				<executions>
 					<execution>
 						<goals>
