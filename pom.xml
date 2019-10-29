@@ -5,7 +5,7 @@
 
     <groupId>sk.tuke</groupId>
 	<artifactId>sensor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.2.0.RELEASE</version>
 	<packaging>pom</packaging>
 	<name>sensor</name>
 	<description>Sensor module configuration pom</description>

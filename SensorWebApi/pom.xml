@@ -5,7 +5,7 @@
 
 	<groupId>sk.tuke</groupId>
 	<artifactId>SensorWebApi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.2.0.RELEASE</version>
 	<packaging>jar</packaging>
 
 	<name>SensorWebApi</name>
@@ -68,7 +68,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.2.0.RELEASE</version>
 			</plugin>
 		</plugins>
 	</build>
