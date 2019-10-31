@@ -3,6 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<groupId>sk.tuke</groupId>
+	<artifactId>SensorWebApi</artifactId>
+	<version>2.2.0.RELEASE</version>
+	<packaging>jar</packaging>
+
+	<name>SensorWebApi</name>
+	<description>Sensor to see if someone is at their work place.</description>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -10,10 +18,6 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>sk.tuke</groupId>
-	<artifactId>SensorWebApi</artifactId>
-	<version>2.2.0.RELEASE</version>
-	<packaging>jar</packaging>
 
 	<name>SensorWebApi</name>
 	<description>Sensor to see if someone is at their work place.</description>
@@ -31,12 +35,28 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.2.0.RELEASE</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.2.0.RELEASE</version>
 		</dependency>
-
+		
+		<dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+			<version>42.2.8</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
@@ -52,6 +72,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>2.2.0.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -60,6 +81,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
@@ -79,6 +101,13 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
 		</dependency>
 
 	</dependencies>
