@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.jpa;
+package sk.tuke.SensorWebApi.server.repositories;
 
 /**
  * Created by IntelliJ IDEA.

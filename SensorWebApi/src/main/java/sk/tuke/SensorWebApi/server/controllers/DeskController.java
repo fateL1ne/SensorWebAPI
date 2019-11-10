@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.tuke.SensorWebApi.server.entities.Desk;
-import sk.tuke.SensorWebApi.server.services.jpa.DeskRepository;
+import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 
 import java.util.List;
 
