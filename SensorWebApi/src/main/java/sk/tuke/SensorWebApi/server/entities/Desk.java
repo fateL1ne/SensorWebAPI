@@ -1,12 +1,5 @@
 package sk.tuke.SensorWebApi.server.entities;
 
-/**
- * Created by IntelliJ IDEA.
- *
- * @project SensorWebApi
- * @author jabu
- * @date 10/31/19
- */
 
 import javax.persistence.*;
 
@@ -39,8 +32,5 @@ public class Desk
     public void setOccupied(boolean occupied) { this.occupied = occupied; }
 
     @Override
-    public String toString() {
-        return ("Desk [id=" + id + ", office_name=" + officeName + ", occupied=" + occupied + "] ");
-    }
-
+    public String toString() { return ("Desk [id=" + id + ", office_name=" + officeName + ", occupied=" + occupied + "] "); }
 }

@@ -11,13 +11,6 @@ import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- *
- * @project SensorWebApi
- * @author jabu
- * @date 10/31/19
- */
 
 @RestController
 @RequestMapping(value = "/desk_monitoring", produces = { MediaType.APPLICATION_JSON_VALUE })
