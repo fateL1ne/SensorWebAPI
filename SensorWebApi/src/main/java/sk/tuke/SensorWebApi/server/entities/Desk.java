@@ -4,7 +4,7 @@ package sk.tuke.SensorWebApi.server.entities;
 import javax.persistence.*;
 
 @Entity
-@Table  (name = "DESK")
+@Table  (name = "Desk")
 public class Desk
 {
     @Id
@@ -14,8 +14,16 @@ public class Desk
     @Column(name = "office_name", length = 30, nullable = false)
     private String officeName;
 
-    @Column(name ="occupied", nullable = false)
-    private boolean occupied;
+    @ManyToOne
+    @JoinColumn(name = "teamId")
+    private Team team;
+
+    @ManyToOne
+    @JoinColumn(name = "officeId")
+    private Office office;
+
+    @Override
+    public String toString() { return ("Desk [id=" + id + ", office_name=" + officeName + "] "); }
 
     public Desk() { }
 
@@ -27,10 +35,4 @@ public class Desk
 
     public void setOfficeName(String officeName) { this.officeName = officeName; }
 
-    public boolean isOccupied() { return occupied; }
-
-    public void setOccupied(boolean occupied) { this.occupied = occupied; }
-
-    @Override
-    public String toString() { return ("Desk [id=" + id + ", office_name=" + officeName + ", occupied=" + occupied + "] "); }
 }

@@ -21,6 +21,12 @@ public class Persona
     /**
      * hide password field from the Jackson parser
      */
+
+    @Override
+    public String toString() {
+        return ("User [Username=" + username + ", password=*******");
+    }
+
     private String password;
 
     public long getId() {
