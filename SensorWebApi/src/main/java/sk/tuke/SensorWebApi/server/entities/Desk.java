@@ -11,9 +11,6 @@ public class Desk
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "office_name", length = 30, nullable = false)
-    private String officeName;
-
     @ManyToOne
     @JoinColumn(name = "teamId")
     private Team team;
@@ -22,17 +19,18 @@ public class Desk
     @JoinColumn(name = "officeId")
     private Office office;
 
-    @Override
-    public String toString() { return ("Desk [id=" + id + ", office_name=" + officeName + "] "); }
-
     public Desk() { }
 
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
 
-    public String getOfficeName() { return officeName; }
-
-    public void setOfficeName(String officeName) { this.officeName = officeName; }
-
+    @Override
+    public String toString() {
+        return "Desk{" +
+                "id=" + id +
+                ", team=" + team.toString() +
+                ", office=" + office.toString() +
+                '}';
+    }
 }

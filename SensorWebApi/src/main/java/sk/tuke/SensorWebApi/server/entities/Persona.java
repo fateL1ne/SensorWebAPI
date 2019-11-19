@@ -9,6 +9,8 @@ import javax.persistence.*;
 public class Persona
 {
 
+    private static final String SECRET_PASS = ":)))))";
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,7 +26,11 @@ public class Persona
 
     @Override
     public String toString() {
-        return ("User [Username=" + username + ", password=*******");
+        return "Persona{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + SECRET_PASS + '\'' +
+                '}';
     }
 
     private String password;

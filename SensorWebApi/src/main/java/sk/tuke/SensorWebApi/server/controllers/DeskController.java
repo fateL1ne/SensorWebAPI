@@ -29,12 +29,4 @@ public class DeskController
         return deskRepositoryService.getOne(id);
     }
 
-    public DeskRepository getDeskRepositoryService() {
-        return deskRepositoryService;
-    }
-
-    public void setDeskRepositoryService(DeskRepository deskRepositoryService) {
-        this.deskRepositoryService = deskRepositoryService;
-    }
-
 }

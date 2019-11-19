@@ -23,8 +23,15 @@ public class Office
 
     @Override
     public String toString() {
-        return ("Office [id=" + id + ", office_name=" + officeName + ", floor=" + floor + ", desks=" + desks.size() + "] ");
+        return "Office{" +
+                "id=" + id +
+                ", officeName='" + officeName + '\'' +
+                ", floor=" + floor +
+                ", desks=" + desks.size() +
+                '}';
     }
+
+    public Office() { };
 
     public Long getId() { return id; }
 
