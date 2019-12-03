@@ -59,4 +59,8 @@ public class Report
     public Date getTimestamp() { return timestamp; }
 
     public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
+
+    public boolean isOccupied() { return occupied; }
+
+    public void setOccupied(boolean occupied) { this.occupied = occupied; }
 }

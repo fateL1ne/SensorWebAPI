@@ -2,10 +2,11 @@ package sk.tuke.SensorWebApi.server.entities;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table  (name = "Desk")
-public class Desk
+public class Desk implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,14 @@ public class Desk
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
+
+    public Team getTeam() { return team; }
+
+    public void setTeam(Team team) { this.team = team; }
+
+    public Office getOffice() { return office; }
+
+    public void setOffice(Office office) { this.office = office; }
 
     @Override
     public String toString() {
