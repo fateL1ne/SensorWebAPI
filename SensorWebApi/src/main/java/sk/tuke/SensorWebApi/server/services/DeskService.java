@@ -34,7 +34,6 @@ public class DeskService
         return new DesksResponse(deskRepository.findByTeamId(id));
     }
 
-
     public class DeskResponse implements Serializable {
 
         private Long id;

@@ -13,7 +13,6 @@ import java.util.Date;
 @Service
 public class ReportService
 {
-
     @Autowired
     private ReportRepository reportRepository;
     @Autowired
@@ -25,6 +24,4 @@ public class ReportService
         Report newReport = new Report(deskRepository.getOne(reportRequest.getDesk()), new Date(), reportRequest.isOccupied());
         reportRepository.save(newReport);
     }
-
-
 }

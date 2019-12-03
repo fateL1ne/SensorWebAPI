@@ -26,9 +26,7 @@ public class DeskController
     }
 
     @GetMapping(value = "/office/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public DeskService.DesksResponse getDesksPerOffice(@PathVariable Long id) {
-        return deskService.getDesksPerOffice(id);
-    }
+    public DeskService.DesksResponse getDesksPerOffice(@PathVariable Long id) { return deskService.getDesksPerOffice(id); }
 
     @GetMapping(value = "/team/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DeskService.DesksResponse getDesksPerTeam(@PathVariable Long id) {

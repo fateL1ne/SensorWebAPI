@@ -1,11 +1,10 @@
 package sk.tuke.SensorWebApi.server.entities;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table  (name = "Desk")
+@Table(name = "Desk")
 public class Desk implements Serializable
 {
     @Id

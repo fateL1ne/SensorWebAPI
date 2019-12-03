@@ -30,6 +30,7 @@ public class Report
     @Column(name = "occupied", nullable = false)
     private boolean occupied;
 
+
     @Override
     public String toString() {
         return "Report{" +
