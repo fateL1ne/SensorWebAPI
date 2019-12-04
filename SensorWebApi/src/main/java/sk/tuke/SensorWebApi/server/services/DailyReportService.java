@@ -32,6 +32,11 @@ public class DailyReportService
 
     public DailyReportService() { }
 
+
+    /**
+     * maybe use actual time instead end of the day ?
+     */
+
     public void generateReport(Desk desk, Date day)
     {
         List<Report> reports = reportRepository.findAllByTimestampBetweenAndDesk(

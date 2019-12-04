@@ -29,7 +29,7 @@ public class TaskService
     @Autowired
     private DailyReportService dailyReportService;
 
-    @Scheduled(cron = "* 5 0 * * *", zone = "Europe/Bratislava")
+    @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
         logger.info("Running daily reports task");
 
@@ -38,7 +38,7 @@ public class TaskService
         allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
     }
 
-    @Scheduled(cron = "* 30 * * * *", zone = "Europe/Bratislava")
+    @Scheduled(cron = "0 30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {
         logger.info("Running mock data task");
 
