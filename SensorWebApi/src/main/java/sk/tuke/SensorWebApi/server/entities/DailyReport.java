@@ -1,6 +1,7 @@
 package sk.tuke.SensorWebApi.server.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "daily_report")
@@ -17,13 +18,23 @@ public class DailyReport
     @Column(name = "average_occupation", nullable = false)
     private Float averageOccupation;
 
+    @Column(name = "day")
+    private Date day;
+
+    @Column(name = "timeline", nullable = true)
+    private long timeline;
+
+
     public DailyReport() { }
 
     public DailyReport(Desk desk) { this.desk = desk; }
 
-    public DailyReport(Desk desk, Float averageOccupation) {
+
+    public DailyReport(Desk desk, Float averageOccupation, Date day, long timeline) {
         this.desk = desk;
         this.averageOccupation = averageOccupation;
+        this.day = day;
+        this.timeline = timeline;
     }
 
     public Long getId() { return id; }
@@ -37,4 +48,12 @@ public class DailyReport
     public Float getAverageOccupation() { return averageOccupation; }
 
     public void setAverageOccupation(Float averageOccupation) { this.averageOccupation = averageOccupation; }
+
+    public long getTimeline() { return timeline; }
+
+    public void setTimeline(long timeline) { this.timeline = timeline; }
+
+    public Date getDay() { return day; }
+
+    public void setDay(Date day) { this.day = day; }
 }
