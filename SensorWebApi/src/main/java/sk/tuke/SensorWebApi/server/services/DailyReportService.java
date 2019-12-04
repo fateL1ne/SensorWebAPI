@@ -26,6 +26,7 @@ public class DailyReportService
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd MMMMM EEEEE");
     private static final long HALF_HOUR = 30 * 60 * 1000;
     private static final String SEPARATOR = "----------------------------------------------";
+    private final String NEW_LINE = System.lineSeparator();
 
 
     @Autowired
@@ -75,21 +76,25 @@ public class DailyReportService
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append("Desk: ").append(desk.getId()).append(", Team: ").append(desk.getTeam().getTeamName());
-        stringBuilder.append(DATE_FORMAT.format(day));
-        stringBuilder.append(SEPARATOR);
+        stringBuilder.append(SEPARATOR).append(NEW_LINE);
+        stringBuilder
+                .append("Desk: ")
+                .append(desk.getId()).append(", Team: ")
+                .append(desk.getTeam().getTeamName())
+                .append(NEW_LINE);
+        stringBuilder.append(DATE_FORMAT.format(day)).append(NEW_LINE);
+        stringBuilder.append(SEPARATOR).append(NEW_LINE).append(NEW_LINE);
 
         for (int interval = 0; interval < REPORTS_PER_DAY; interval++) {
             if ((bit_mask & timeline) != 0) {
-                stringBuilder.append(getInterval(day, interval)).append(" ---> Occupied");
+                stringBuilder.append(getInterval(day, interval)).append(" ---> Occupied").append(NEW_LINE);
             } else {
-                stringBuilder.append(getInterval(day, interval)).append(" ---> Free");
+                stringBuilder.append(getInterval(day, interval)).append(" ---> Free").append(NEW_LINE);
             }
             bit_mask <<= 0x01;
         }
 
-        stringBuilder.append(SEPARATOR);
+        stringBuilder.append(SEPARATOR).append(NEW_LINE);
 
         return stringBuilder.toString();
     }
