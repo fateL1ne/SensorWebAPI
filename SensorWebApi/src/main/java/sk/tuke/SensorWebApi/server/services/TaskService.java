@@ -5,7 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.entities.Desk;
+import sk.tuke.SensorWebApi.server.entities.Report;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
+import sk.tuke.SensorWebApi.server.repositories.ReportRepository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class TaskService
@@ -17,16 +24,33 @@ public class TaskService
     private DeskRepository deskRepository;
 
     @Autowired
+    private ReportRepository reportRepository;
+
+    @Autowired
     private DailyReportService dailyReportService;
 
     @Scheduled(cron = "* 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
-        logger.info(" just temporary smile :)))");
-//        logger.info("Running daily reports task");
-//
-//        Date yesterday = new Date(System.currentTimeMillis() - DAY);
-//        List<Desk> allDesks = deskRepository.findAll();
-//        allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
+        logger.info("Running daily reports task");
+
+        Date yesterday = new Date(System.currentTimeMillis() - DAY);
+        List<Desk> allDesks = deskRepository.findAll();
+        allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
+    }
+
+    @Scheduled(cron = "* 30 * * * *", zone = "Europe/Bratislava")
+    public void mockReport() {
+        logger.info("Running mock data task");
+
+        List<Desk> allDesks = deskRepository.findAll();
+        Random random = new Random();
+
+        allDesks.forEach( (desk -> {
+            reportRepository.save(
+                    new Report(desk, new Date(), random.nextInt() % 2 == 0)
+            );
+        }));
+
     }
 
 }
