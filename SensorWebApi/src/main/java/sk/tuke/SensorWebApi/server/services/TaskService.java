@@ -38,7 +38,7 @@ public class TaskService
         allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
     }
 
-    @Scheduled(cron = "0 30 * * * *", zone = "Europe/Bratislava")
+    @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {
         logger.info("Running mock data task");
 
