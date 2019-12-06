@@ -3,7 +3,11 @@ package sk.tuke.SensorWebApi.server.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.Desk;
+import sk.tuke.SensorWebApi.server.entities.Office;
+import sk.tuke.SensorWebApi.server.entities.Team;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
+import sk.tuke.SensorWebApi.server.repositories.OfficeRepository;
+import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +19,12 @@ public class DeskService
 
     @Autowired
     private DeskRepository deskRepository;
+
+    @Autowired
+    private OfficeRepository officeRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
 
     public DeskService() { }
 
@@ -32,6 +42,23 @@ public class DeskService
 
     public DesksResponse getDesksPerTeam(Long id) {
         return new DesksResponse(deskRepository.findByTeamId(id));
+    }
+
+
+    public DesksResponse getDesksPerOfficeAutoComplete(String searchOffice) {
+        List<Office> offices = officeRepository.findAllByOfficeNameStartingWith(searchOffice);
+        List<Desk> desks = new ArrayList<>();
+        offices.forEach( office -> desks.addAll(office.getDesks()));
+
+        return new DesksResponse(desks);
+    }
+
+    public DesksResponse getDesksPerTeamAutoComplete(String searchTeam) {
+        List<Team> teams = teamRepository.findAllByTeamNameStartingWith(searchTeam);
+        List<Desk> desks = new ArrayList<>();
+        teams.forEach( team -> desks.addAll(team.getDesks()));
+
+        return new DesksResponse(desks);
     }
 
     public class DeskResponse implements Serializable {
