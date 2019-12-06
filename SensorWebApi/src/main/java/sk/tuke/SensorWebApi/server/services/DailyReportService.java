@@ -76,7 +76,7 @@ public class DailyReportService
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(SEPARATOR).append(NEW_LINE);
+        stringBuilder.append(NEW_LINE).append(SEPARATOR).append(NEW_LINE);
         stringBuilder
                 .append("Desk: ")
                 .append(desk.getId()).append(", Team: ")

@@ -1,5 +1,6 @@
 package sk.tuke.SensorWebApi.server.services;
 
+import com.github.rkumsher.date.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class TaskService
 {
     private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
     private static final long DAY = 24 * 60 * 60 * 1000;
+    private static final long WEEK = DAY * 7;
 
     @Autowired
     private DeskRepository deskRepository;
@@ -29,6 +31,9 @@ public class TaskService
     @Autowired
     private DailyReportService dailyReportService;
 
+    @Autowired
+    private WeeklyReportService weeklyReportService;
+
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
         logger.info("Running daily reports task");
@@ -38,6 +43,17 @@ public class TaskService
         allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
     }
 
+    @Scheduled(cron = "0 0 1 * * MON")
+    public void generateWeeklyReports() {
+        logger.info("Running weekly reports task");
+
+        Date startOfWeek = DateUtils.atStartOfDay(new Date(System.currentTimeMillis() - WEEK));
+        Date endOfWeek = DateUtils.atStartOfDay(new Date(System.currentTimeMillis()));
+
+        List<Desk> allDesks = deskRepository.findAll();
+        allDesks.forEach( desk -> weeklyReportService.generateReport(desk, startOfWeek, endOfWeek));
+    }
+
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {
         logger.info("Running mock data task");
@@ -45,12 +61,7 @@ public class TaskService
         List<Desk> allDesks = deskRepository.findAll();
         Random random = new Random();
 
-        allDesks.forEach( (desk -> {
-            reportRepository.save(
-                    new Report(desk, new Date(), random.nextInt() % 2 == 0)
-            );
-        }));
-
+        allDesks.forEach( (desk -> reportRepository.save(new Report(desk, new Date(), random.nextInt() % 2 == 0))));
     }
 
 }

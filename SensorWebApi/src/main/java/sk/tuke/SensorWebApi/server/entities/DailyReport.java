@@ -15,6 +15,10 @@ public class DailyReport
     @JoinColumn(name = "deskId")
     private Desk desk;
 
+    @ManyToOne
+    @JoinColumn(name = "weeklyReportId")
+    private WeeklyReport weeklyReport;
+
     @Column(name = "average_occupation", nullable = false)
     private Float averageOccupation;
 
@@ -56,4 +60,8 @@ public class DailyReport
     public Date getDay() { return day; }
 
     public void setDay(Date day) { this.day = day; }
+
+    public WeeklyReport getWeeklyReport() { return weeklyReport; }
+
+    public void setWeeklyReport(WeeklyReport weeklyReport) { this.weeklyReport = weeklyReport; }
 }
