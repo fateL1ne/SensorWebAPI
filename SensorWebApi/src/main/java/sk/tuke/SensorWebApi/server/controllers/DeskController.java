@@ -32,4 +32,14 @@ public class DeskController
     public DeskService.DesksResponse getDesksPerTeam(@PathVariable Long id) {
         return deskService.getDesksPerTeam(id);
     }
+
+    @GetMapping(value = "/office/autocomplete/{searchOffice}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public DeskService.DesksResponse getDesksPerOfficeAutocomplete(@PathVariable String searchOffice) {
+        return deskService.getDesksPerOfficeAutoComplete(searchOffice);
+    }
+
+    @GetMapping(value = "/team/autocomplete/{searchTeam}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public DeskService.DesksResponse getDesksPerTeamAutocomplete(@PathVariable String searchTeam) {
+        return deskService.getDesksPerTeamAutoComplete(searchTeam);
+    }
 }

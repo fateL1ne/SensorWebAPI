@@ -21,6 +21,11 @@ public class Desk implements Serializable
 
     public Desk() { }
 
+    public Desk(Team team, Office office) {
+        this.team = team;
+        this.office = office;
+    }
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
