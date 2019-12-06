@@ -1,5 +1,7 @@
 package sk.tuke.SensorWebApi.server.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.Desk;
@@ -8,7 +10,9 @@ import sk.tuke.SensorWebApi.server.entities.Team;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.repositories.OfficeRepository;
 import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.request.PutDeskRequest;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,11 @@ import java.util.List;
 @Service
 public class DeskService
 {
+
+    private final static boolean UPDATED = true;
+    private final static boolean FAILED = false;
+
+    private final Logger logger = LoggerFactory.getLogger(DeskService.class);
 
     @Autowired
     private DeskRepository deskRepository;
@@ -59,6 +68,26 @@ public class DeskService
         teams.forEach( team -> desks.addAll(team.getDesks()));
 
         return new DesksResponse(desks);
+    }
+
+    public boolean editTeam(PutDeskRequest incomingRequest) {
+        Long id = incomingRequest.getDeskId();
+        String newName = incomingRequest.getNewName();
+        Desk desk;
+        Team team;
+
+        try {
+            desk = deskRepository.getOne(id);
+            team = teamRepository.findOneByTeamName(newName);
+            desk.setTeam(team);
+        } catch (EntityNotFoundException e) {
+            logger.error("Can't assign the new team name " + newName + " for desk with ID: " + id);
+            return FAILED;
+        }
+
+        deskRepository.save(desk);
+
+        return UPDATED;
     }
 
     public class DeskResponse implements Serializable {
