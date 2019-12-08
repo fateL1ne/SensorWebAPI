@@ -10,6 +10,7 @@ import sk.tuke.SensorWebApi.server.services.DeskService;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/desks", produces = { MediaType.APPLICATION_JSON_VALUE })
 public class DeskController
 {
@@ -50,5 +51,15 @@ public class DeskController
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     *
+     *  PUT, POST request handler
+     */
+
+    @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
+    public ResponseEntity handle() {
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
