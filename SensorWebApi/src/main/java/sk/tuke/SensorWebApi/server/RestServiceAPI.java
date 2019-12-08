@@ -10,5 +10,10 @@ public class RestServiceAPI {
     public static void main(String[] args) {
         SpringApplication.run(RestServiceAPI.class, args);
 
+        /**
+         *
+         *  test trigger
+         *
+         */
     }
 }

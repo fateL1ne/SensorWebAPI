@@ -44,7 +44,7 @@ public class DeskController
         return deskService.getDesksPerTeamAutoComplete(searchTeam);
     }
 
-    @PostMapping( value = "/editTeam")
+    @PutMapping( value = "/editTeam")
     public ResponseEntity<HttpStatus> editTeam(@RequestBody PutDeskRequest putDeskRequest) {
         if (putDeskRequest.isValid() && deskService.editTeam(putDeskRequest) )
             return new ResponseEntity(HttpStatus.OK);
