@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sk.tuke.SensorWebApi.server.request.NewDesk;
 import sk.tuke.SensorWebApi.server.request.PutDeskRequest;
 import sk.tuke.SensorWebApi.server.services.DeskService;
 
@@ -21,6 +22,7 @@ public class DeskController
     public DeskService.DesksResponse getAllDesks() {
         return deskService.fetchAll();
     }
+
 
     @GetMapping(value ="/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DeskService.DeskResponse getDesk(@PathVariable Long id) {
@@ -48,6 +50,14 @@ public class DeskController
     @PutMapping( value = "/editTeam")
     public ResponseEntity<HttpStatus> editTeam(@RequestBody PutDeskRequest putDeskRequest) {
         if (putDeskRequest.isValid() && deskService.editTeam(putDeskRequest) )
+            return new ResponseEntity(HttpStatus.OK);
+        else
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "/add")
+    public ResponseEntity<HttpStatus> addDesk(@RequestBody NewDesk newDesk) {
+        if (newDesk.isValid() && deskService.addDesk(newDesk) )
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

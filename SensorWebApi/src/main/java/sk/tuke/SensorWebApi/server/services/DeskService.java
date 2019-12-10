@@ -10,6 +10,7 @@ import sk.tuke.SensorWebApi.server.entities.Team;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.repositories.OfficeRepository;
 import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.request.NewDesk;
 import sk.tuke.SensorWebApi.server.request.PutDeskRequest;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,7 +22,7 @@ import java.util.List;
 public class DeskService
 {
 
-    private final static boolean UPDATED = true;
+    private final static boolean SUCCESS = true;
     private final static boolean FAILED = false;
 
     private final Logger logger = LoggerFactory.getLogger(DeskService.class);
@@ -70,6 +71,34 @@ public class DeskService
         return new DesksResponse(desks);
     }
 
+    public boolean addDesk(NewDesk newDesk) {
+        String teamName = newDesk.getTeamName();
+        String officeName = newDesk.getOfficeName();
+        Office office;
+        Team team;
+
+        try {
+            office = officeRepository.findOneByOfficeName(officeName);
+            team = teamRepository.findOneByTeamName(teamName);
+        } catch (EntityNotFoundException e) {
+            return FAILED;
+        }
+
+        deskRepository.save(new Desk(generateLabel(office), team, office));
+
+        return SUCCESS;
+    }
+
+    private String generateLabel(Office office) {
+        int actualDesksPerOffice = office.getDesks().size();
+        String officeName = office.getOfficeName();
+
+        if (actualDesksPerOffice < 9)
+            return officeName + "0" + (actualDesksPerOffice + 1);
+        else
+            return officeName + (actualDesksPerOffice + 1);
+    }
+
     public boolean editTeam(PutDeskRequest incomingRequest) {
         Long id = incomingRequest.getDeskId();
         String newName = incomingRequest.getNewName();
@@ -87,7 +116,7 @@ public class DeskService
 
         deskRepository.save(desk);
 
-        return UPDATED;
+        return SUCCESS;
     }
 
     public class DeskResponse implements Serializable {
