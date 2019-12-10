@@ -8,4 +8,5 @@ import java.util.List;
 public interface OfficeRepository extends JpaRepository<Office, Long> {
     List<Office> findAllByOfficeNameStartingWith(String office);
     Office findOneByOfficeName(String name);
+    List<Office> findAllById(Long id);
 }

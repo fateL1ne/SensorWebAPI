@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.tuke.SensorWebApi.server.services.TeamService;
 
+import java.util.List;
+
+
 @RestController
 @RequestMapping(value = "/teams", consumes = "application/json", produces = "application/json")
 public class TeamController {
@@ -21,4 +24,10 @@ public class TeamController {
     public TeamService.TeamsResponse getAllTeams() {
         return teamService.fetchAll();
     }
+
+    @GetMapping(value = "/allTeamNames", produces = { MediaType.APPLICATION_JSON_VALUE})
+    public List<String> teamNames() {
+        return teamService.getTeamNames();
+    }
+
 }

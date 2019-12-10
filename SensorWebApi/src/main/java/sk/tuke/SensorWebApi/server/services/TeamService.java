@@ -22,6 +22,14 @@ public class TeamService {
         return new TeamsResponse(teamRepository.findAll());
     }
 
+    public List<String> getTeamNames() {
+        List<String> teamNames = new ArrayList<>();
+
+        this.fetchAll().teams.forEach(team -> teamNames.add(team.teamName));
+
+        return teamNames;
+    }
+
     public class TeamResponse implements Serializable {
 
         private Long id;
