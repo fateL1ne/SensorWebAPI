@@ -93,11 +93,13 @@ public class DeskService
     public class DeskResponse implements Serializable {
 
         private Long id;
+        private String label;
         private String officeName;
         private String teamName;
 
         DeskResponse(Desk desk) {
             this.id = desk.getId();
+            this.label = desk.getLabel();
             this.officeName = desk.getOffice().getOfficeName();
             this.teamName = desk.getTeam().getTeamName();
         }
@@ -109,6 +111,10 @@ public class DeskService
         public void setId(Long id) {
             this.id = id;
         }
+
+        public String getLabel() { return label; }
+
+        public void setLabel(String label) { this.label = label; }
 
         public String getOfficeName() {
             return officeName;
