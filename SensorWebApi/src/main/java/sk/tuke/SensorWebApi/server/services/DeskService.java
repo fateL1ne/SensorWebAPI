@@ -3,6 +3,8 @@ package sk.tuke.SensorWebApi.server.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.Desk;
 import sk.tuke.SensorWebApi.server.entities.Office;
@@ -71,7 +73,7 @@ public class DeskService
         return new DesksResponse(desks);
     }
 
-    public boolean addDesk(NewDesk newDesk) {
+    public ResponseEntity addDesk(NewDesk newDesk) {
         String teamName = newDesk.getTeamName();
         String officeName = newDesk.getOfficeName();
         Office office;
@@ -81,13 +83,14 @@ public class DeskService
             office = officeRepository.findOneByOfficeName(officeName);
             team = teamRepository.findOneByTeamName(teamName);
         } catch (EntityNotFoundException e) {
-            return FAILED;
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
         deskRepository.save(new Desk(generateLabel(office), team, office));
 
-        return SUCCESS;
+        return new ResponseEntity(HttpStatus.OK);
     }
+
 
     private String generateLabel(Office office) {
         int actualDesksPerOffice = office.getDesks().size();
@@ -99,9 +102,10 @@ public class DeskService
             return officeName + (actualDesksPerOffice + 1);
     }
 
-    public boolean editTeam(PutDeskRequest incomingRequest) {
-        Long id = incomingRequest.getDeskId();
-        String newName = incomingRequest.getNewName();
+
+    public ResponseEntity editTeam(PutDeskRequest putDeskRequest) {
+        Long id = putDeskRequest.getDeskId();
+        String newName = putDeskRequest.getNewName();
         Desk desk;
         Team team;
 
@@ -111,12 +115,12 @@ public class DeskService
             desk.setTeam(team);
         } catch (EntityNotFoundException e) {
             logger.error("Can't assign the new team name " + newName + " for desk with ID: " + id);
-            return FAILED;
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
         deskRepository.save(desk);
 
-        return SUCCESS;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     public class DeskResponse implements Serializable {

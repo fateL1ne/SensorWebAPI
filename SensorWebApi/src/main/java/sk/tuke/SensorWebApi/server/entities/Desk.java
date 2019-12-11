@@ -11,7 +11,7 @@ public class Desk implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "label", length = 16, nullable = false)
+    @Column(name = "label", length = 16, nullable = false, unique = true)
     private String label;
 
     @ManyToOne

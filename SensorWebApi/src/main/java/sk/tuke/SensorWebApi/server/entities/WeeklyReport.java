@@ -20,6 +20,10 @@ public class WeeklyReport
     @Column(name = "averageOccupation")
     private float averageOccupation;
 
+    @ManyToOne
+    @JoinColumn(name = "deskId")
+    private Desk desk;
+
     @Column(name = "week")
     private Date week;
 

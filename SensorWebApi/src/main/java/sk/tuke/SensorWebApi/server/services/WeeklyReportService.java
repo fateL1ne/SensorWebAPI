@@ -38,8 +38,14 @@ public class WeeklyReportService
         }
 
         float averageOccupation = countAverageOccupation(dailyReports);
+        WeeklyReport weeklyReport = new WeeklyReport(dailyReports, averageOccupation, startWeek);
 
-        weeklyReportRepository.save(new WeeklyReport(dailyReports, averageOccupation, startWeek));
+        dailyReports.forEach( dailyReport -> {
+            dailyReport.setWeeklyReport(weeklyReport);
+            dailyReportRepository.save(dailyReport);
+        });
+
+        weeklyReportRepository.save(weeklyReport);
     }
 
 

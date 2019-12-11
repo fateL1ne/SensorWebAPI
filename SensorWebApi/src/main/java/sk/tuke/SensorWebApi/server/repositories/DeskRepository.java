@@ -8,4 +8,5 @@ import java.util.List;
 public interface DeskRepository extends JpaRepository<Desk, Long> {
     List<Desk> findByOfficeId(Long id);
     List<Desk> findByTeamId(Long id);
+    Desk findDesksByLabel(String label);
 }

@@ -23,7 +23,6 @@ public class DeskController
         return deskService.fetchAll();
     }
 
-
     @GetMapping(value ="/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DeskService.DeskResponse getDesk(@PathVariable Long id) {
         return deskService.fetchOne(id);
@@ -37,6 +36,12 @@ public class DeskController
         return deskService.getDesksPerTeam(id);
     }
 
+    @PutMapping(value = "/editTeam")
+    public ResponseEntity editTeam(@RequestBody PutDeskRequest putDeskRequest) { return deskService.editTeam(putDeskRequest); }
+
+    @PostMapping(value = "/add")
+    public ResponseEntity addDesk(@RequestBody NewDesk newDesk) { return deskService.addDesk(newDesk); }
+
     @GetMapping(value = "/office/autocomplete/{searchOffice}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DeskService.DesksResponse getDesksPerOfficeAutocomplete(@PathVariable String searchOffice) {
         return deskService.getDesksPerOfficeAutoComplete(searchOffice);
@@ -47,29 +52,10 @@ public class DeskController
         return deskService.getDesksPerTeamAutoComplete(searchTeam);
     }
 
-    @PutMapping( value = "/editTeam")
-    public ResponseEntity<HttpStatus> editTeam(@RequestBody PutDeskRequest putDeskRequest) {
-        if (putDeskRequest.isValid() && deskService.editTeam(putDeskRequest) )
-            return new ResponseEntity(HttpStatus.OK);
-        else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
-
-    @PostMapping(value = "/add")
-    public ResponseEntity<HttpStatus> addDesk(@RequestBody NewDesk newDesk) {
-        if (newDesk.isValid() && deskService.addDesk(newDesk) )
-            return new ResponseEntity(HttpStatus.OK);
-        else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
-
     /**
-     *
-     *  PUT, POST request handler
+     *  PRE-FLIGHT REQUEST HANDLER
      */
 
     @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
-    public ResponseEntity handle() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
+    public ResponseEntity handle() { return new ResponseEntity(HttpStatus.OK); }
 }
