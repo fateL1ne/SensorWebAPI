@@ -6,10 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import sk.tuke.SensorWebApi.server.entities.Desk;
-import sk.tuke.SensorWebApi.server.entities.Report;
-import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
-import sk.tuke.SensorWebApi.server.repositories.ReportRepository;
+import sk.tuke.SensorWebApi.server.entities.*;
+import sk.tuke.SensorWebApi.server.repositories.*;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +32,15 @@ public class TaskService
     @Autowired
     private WeeklyReportService weeklyReportService;
 
+    @Autowired
+    private TeamRepository teamRepository;
+
+    @Autowired
+    private DailyReportRepository dailyReportRepository;
+
+    @Autowired
+    private TeamService teamService;
+
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
         logger.info("Running daily reports task");
@@ -41,6 +48,11 @@ public class TaskService
         Date yesterday = new Date(System.currentTimeMillis() - DAY);
         List<Desk> allDesks = deskRepository.findAll();
         allDesks.forEach( desk -> dailyReportService.generateReport(desk, yesterday));
+
+        List<Team> teams = teamRepository.findAll();
+        List<DailyReport> generatedReports = dailyReportRepository.findAllByDay(yesterday);
+
+        teams.forEach( team -> teamService.generateDailyReport(team, generatedReports, yesterday));
     }
 
     @Scheduled(cron = "0 0 1 * * MON")

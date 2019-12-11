@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface DailyReportRepository extends JpaRepository<DailyReport, Long> {
     List<DailyReport> findAllByDayBetweenAndDesk(Date startWeek, Date endWeek, Desk desk);
+    List<DailyReport> findAllByDay(Date day);
 
 }

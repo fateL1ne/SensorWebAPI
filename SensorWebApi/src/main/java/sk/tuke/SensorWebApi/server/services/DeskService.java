@@ -1,5 +1,6 @@
 package sk.tuke.SensorWebApi.server.services;
 
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.Desk;
 import sk.tuke.SensorWebApi.server.entities.Office;
 import sk.tuke.SensorWebApi.server.entities.Team;
+import sk.tuke.SensorWebApi.server.repositories.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.repositories.OfficeRepository;
 import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
@@ -34,6 +36,12 @@ public class DeskService
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private DailyReportRepository dailyReportRepository;
+
+    @Autowired
+    private TeamService teamService;
 
     public DeskService() { }
 

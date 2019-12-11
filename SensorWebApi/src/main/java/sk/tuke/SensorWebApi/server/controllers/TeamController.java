@@ -3,10 +3,12 @@ package sk.tuke.SensorWebApi.server.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.tuke.SensorWebApi.server.services.TeamService;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +30,11 @@ public class TeamController {
     @GetMapping(value = "/allTeamNames", produces = { MediaType.APPLICATION_JSON_VALUE})
     public List<String> teamNames() {
         return teamService.getTeamNames();
+    }
+
+    @GetMapping(value = "/dailyReports/{day}", produces = { MediaType.APPLICATION_JSON_VALUE})
+    public TeamService.DailyTeamReportsResponse getDailyReports(@PathVariable Date day) {
+        return teamService.getDailyTeamReports(day);
     }
 
 }
