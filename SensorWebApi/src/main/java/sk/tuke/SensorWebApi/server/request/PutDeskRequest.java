@@ -8,10 +8,7 @@ public class PutDeskRequest {
     public PutDeskRequest() { }
 
 
-    public boolean isValid() {
-        return (deskId != null && newName != null);
-    }
-
+    public boolean isValid() { return (deskId != null && newName != null); }
 
     public String getNewName() {
         return newName;
