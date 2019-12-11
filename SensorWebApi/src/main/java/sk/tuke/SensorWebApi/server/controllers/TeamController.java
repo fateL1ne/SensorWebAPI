@@ -33,8 +33,8 @@ public class TeamController {
     }
 
     @GetMapping(value = "/dailyReports/{day}", produces = { MediaType.APPLICATION_JSON_VALUE})
-    public TeamService.DailyTeamReportsResponse getDailyReports(@PathVariable Date day) {
-        return teamService.getDailyTeamReports(day);
+    public TeamService.DailyTeamReportsResponse getDailyReports(@PathVariable Long day) {
+        return teamService.getDailyTeamReports(new Date(day));
     }
 
 }

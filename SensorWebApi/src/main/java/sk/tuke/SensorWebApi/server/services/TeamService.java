@@ -1,5 +1,6 @@
 package sk.tuke.SensorWebApi.server.services;
 
+import com.github.rkumsher.date.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.DailyReport;
@@ -59,7 +60,7 @@ public class TeamService {
 
 
     public DailyTeamReportsResponse getDailyTeamReports(Date day) {
-        return new DailyTeamReportsResponse(dailyTeamReportRepository.findAllByDay(day));
+        return new DailyTeamReportsResponse(dailyTeamReportRepository.findAllByDay(DateUtils.atStartOfDay(day)));
     }
 
 
