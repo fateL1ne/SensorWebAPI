@@ -24,9 +24,6 @@ import java.util.List;
 public class DeskService
 {
 
-    private final static boolean SUCCESS = true;
-    private final static boolean FAILED = false;
-
     private final Logger logger = LoggerFactory.getLogger(DeskService.class);
 
     @Autowired

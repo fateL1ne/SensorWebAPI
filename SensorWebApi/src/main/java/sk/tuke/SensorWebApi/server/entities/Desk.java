@@ -15,11 +15,11 @@ public class Desk implements Serializable
     private String label;
 
     @ManyToOne
-    @JoinColumn(name = "teamId")
+    @JoinColumn(name = "teamId", nullable = false)
     private Team team;
 
     @ManyToOne
-    @JoinColumn(name = "officeId")
+    @JoinColumn(name = "officeId", nullable = false)
     private Office office;
 
     public Desk() { }
