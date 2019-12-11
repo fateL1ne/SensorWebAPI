@@ -112,10 +112,12 @@ public class DeskService
             desk.setTeam(team);
         } catch (EntityNotFoundException | NullPointerException e) {
             logger.error("Can't assign the new team name " + newName + " for desk with ID: " + id);
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
 
+        team.getDesks().add(desk);
         deskRepository.save(desk);
+
 
         return new ResponseEntity(HttpStatus.OK);
     }
