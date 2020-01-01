@@ -2,15 +2,23 @@ package sk.tuke.SensorWebApi.server.request;
 
 public class NewDesk {
 
+    private String deskLabel;
     private String teamName;
     private String officeName;
 
     public NewDesk() { }
 
     public boolean isValid() {
-        return (teamName != null && officeName != null);
+        return (deskLabel != null && teamName != null && officeName != null);
     }
 
+    public String getDeskLabel() {
+        return deskLabel;
+    }
+
+    public void setDeskLabel(String deskLabel) {
+        this.deskLabel = deskLabel;
+    }
 
     public String getTeamName() {
         return teamName;
