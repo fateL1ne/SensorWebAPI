@@ -10,7 +10,7 @@ import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Report;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DailyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;

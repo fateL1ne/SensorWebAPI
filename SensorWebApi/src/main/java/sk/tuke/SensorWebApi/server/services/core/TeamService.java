@@ -9,8 +9,8 @@ import sk.tuke.SensorWebApi.server.http.response.TeamsResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DailyTeamReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.MonthlyTeamReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
 
 import java.util.ArrayList;

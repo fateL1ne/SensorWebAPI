@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DailyReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.WeeklyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

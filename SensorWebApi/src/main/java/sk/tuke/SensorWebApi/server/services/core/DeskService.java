@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DailyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.OfficeRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
