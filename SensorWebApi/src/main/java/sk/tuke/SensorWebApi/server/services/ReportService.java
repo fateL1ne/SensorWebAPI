@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.Report;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.repositories.ReportRepository;
-import sk.tuke.SensorWebApi.server.request.ReportRequest;
+import sk.tuke.SensorWebApi.server.controllers.request.ReportRequest;
 
 import java.util.Date;
 

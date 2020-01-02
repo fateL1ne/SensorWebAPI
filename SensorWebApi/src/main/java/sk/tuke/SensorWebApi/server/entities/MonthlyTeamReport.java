@@ -2,7 +2,9 @@ package sk.tuke.SensorWebApi.server.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "monthly_team_report")
@@ -21,6 +23,9 @@ public class MonthlyTeamReport {
 
     @Column(name = "month")
     private Date month;
+
+    @OneToMany(mappedBy = "monthlyReport")
+    private List<WeeklyReport> weeklyReportList = new ArrayList<>();
 
     public MonthlyTeamReport(Team team, Float averageOccupation, Date month) {
         this.team = team;
@@ -50,5 +55,21 @@ public class MonthlyTeamReport {
 
     public void setAverageOccupation(Float averageOccupation) {
         this.averageOccupation = averageOccupation;
+    }
+
+    public Date getMonth() {
+        return month;
+    }
+
+    public void setMonth(Date month) {
+        this.month = month;
+    }
+
+    public List<WeeklyReport> getWeeklyReportList() {
+        return weeklyReportList;
+    }
+
+    public void setWeeklyReportList(List<WeeklyReport> weeklyReportList) {
+        this.weeklyReportList = weeklyReportList;
     }
 }

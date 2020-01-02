@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.request;
+package sk.tuke.SensorWebApi.server.controllers.request;
 
 public class NewDesk {
 

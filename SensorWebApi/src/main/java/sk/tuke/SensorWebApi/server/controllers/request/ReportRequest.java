@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.request;
+package sk.tuke.SensorWebApi.server.controllers.request;
 
 import java.io.Serializable;
 import java.util.Date;

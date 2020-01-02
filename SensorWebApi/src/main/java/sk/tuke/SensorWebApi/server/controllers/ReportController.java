@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.tuke.SensorWebApi.server.request.ReportRequest;
+import sk.tuke.SensorWebApi.server.controllers.request.ReportRequest;
 import sk.tuke.SensorWebApi.server.services.ReportService;
 
 

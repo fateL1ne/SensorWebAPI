@@ -49,6 +49,8 @@ public class WeeklyReportService
     }
 
 
+
+
     private float countAverageOccupation(List<DailyReport> reports) {
         float sum = 0.00f;
 
@@ -57,5 +59,6 @@ public class WeeklyReportService
 
         return sum / WORKING_DAYS;
     }
+
 
 }

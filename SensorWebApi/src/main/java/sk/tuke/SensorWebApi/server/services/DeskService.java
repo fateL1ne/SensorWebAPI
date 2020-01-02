@@ -13,8 +13,8 @@ import sk.tuke.SensorWebApi.server.repositories.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.repositories.OfficeRepository;
 import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
-import sk.tuke.SensorWebApi.server.request.NewDesk;
-import sk.tuke.SensorWebApi.server.request.PutDeskRequest;
+import sk.tuke.SensorWebApi.server.controllers.request.NewDesk;
+import sk.tuke.SensorWebApi.server.controllers.request.PutDeskRequest;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;

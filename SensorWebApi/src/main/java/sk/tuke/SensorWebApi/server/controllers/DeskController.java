@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.tuke.SensorWebApi.server.request.NewDesk;
-import sk.tuke.SensorWebApi.server.request.PutDeskRequest;
+import sk.tuke.SensorWebApi.server.controllers.request.NewDesk;
+import sk.tuke.SensorWebApi.server.controllers.request.PutDeskRequest;
 import sk.tuke.SensorWebApi.server.services.DeskService;
 
 
