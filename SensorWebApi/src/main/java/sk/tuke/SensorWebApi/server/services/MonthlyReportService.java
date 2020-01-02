@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.*;
 
-import sk.tuke.SensorWebApi.server.repositories.MonthlyReportRepository;
-import sk.tuke.SensorWebApi.server.repositories.MonthlyTeamReportRepository;
-import sk.tuke.SensorWebApi.server.repositories.TeamRepository;
-import sk.tuke.SensorWebApi.server.repositories.WeeklyReportRepository;
+import sk.tuke.SensorWebApi.server.repositories.*;
 
 import java.util.Date;
 import java.util.List;
@@ -22,9 +19,32 @@ public class MonthlyReportService
     @Autowired private WeeklyReportRepository weeklyReportRepository;
     @Autowired private TeamRepository teamRepository;
     @Autowired private MonthlyTeamReportRepository teamReportRepository;
+    @Autowired private GenericMonthReportRepository genericMonthReportRepository;
+    @Autowired private DeskRepository deskRepository;
+    @Autowired private OfficeRepository officeRepository;
 
-    public void generateGenericReport() {
+    public void generateGenericReport(Date month)
+    {
 
+        List<MonthlyTeamReport> list = teamReportRepository.findAll();
+
+        float occupation = 0.00f;
+
+        for (MonthlyTeamReport monthlyTeamReport : list)
+            occupation += monthlyTeamReport.getAverageOccupation();
+
+        occupation /= list.size();
+
+        teamReportRepository.findAll();
+
+        genericMonthReportRepository.save(
+                new GenericMonthReport(
+                        deskRepository.findAll().size(),
+                        teamRepository.findAll().size(),
+                        officeRepository.findAll().size(),
+                        occupation
+                )
+        );
     }
 
     public void generateTeamReport(Date month)
