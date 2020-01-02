@@ -35,6 +35,13 @@ public class WeeklyReport
 
     public WeeklyReport() { }
 
+    public WeeklyReport(List<DailyReport> dailyReportList, float averageOccupation, Desk desk, Date week) {
+        this.dailyReportList = dailyReportList;
+        this.averageOccupation = averageOccupation;
+        this.desk = desk;
+        this.week = week;
+    }
+
     public WeeklyReport(List<DailyReport> dailyReportList, float averageOccupation, Date week) {
         this.dailyReportList = dailyReportList;
         this.averageOccupation = averageOccupation;

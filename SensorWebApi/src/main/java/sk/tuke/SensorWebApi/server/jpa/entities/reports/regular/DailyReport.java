@@ -17,7 +17,7 @@ public class DailyReport
     @JoinColumn(name = "deskId")
     private Desk desk;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "weeklyReportId")
     private WeeklyReport weeklyReport;
 

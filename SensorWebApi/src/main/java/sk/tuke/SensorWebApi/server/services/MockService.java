@@ -9,6 +9,7 @@ import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportR
 import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
@@ -37,6 +38,7 @@ public class MockService
     @Autowired private DailyReportRepository dailyReportRepository;
     @Autowired private MonthlyReportService monthlyReportService;
     @Autowired private TeamService teamService;
+    @Autowired private WeeklyReportRepository weeklyReportRepository;
 
 
     public void init() {
@@ -54,7 +56,7 @@ public class MockService
 
         Date D2 =calendarEnd.getTime();
 
-        mockME(D1, D2);
+        genWeekReport(D1, D2);
     }
 
     public  void mockME(Date d1, Date d2) {
@@ -86,6 +88,7 @@ public class MockService
         long m1  = d1.getTime();
         long m2 = d2.getTime();
 
+
         for (Desk desk : allDesks) {
             for (long i = m1; i <= m2; i += DAY) {
                 dailyReportService.generateReport(desk, new Date(i));
@@ -102,6 +105,19 @@ public class MockService
         for (Desk desk : allDesks) {
             for (long i = m1; i <= m2; i += WEEK) {
                 weeklyReportService.generateReport(desk, new Date(i), DateUtils.atEndOfDay(new Date(i + WEEK - 3600)));
+            }
+        }
+    }
+
+    public  void genMonReport(Date d1, Date d2) {
+        List<Desk> allDesks = deskRepository.findAll();
+
+        long m1  = d1.getTime();
+        long m2 = d2.getTime();
+
+        for (Desk desk : allDesks) {
+            for (long i = m1; i <= m2; i += DAY*30) {
+                monthlyReportService.generateDeskReport(desk, new Date(i), new Date(i+DAY*30) );
             }
         }
     }
