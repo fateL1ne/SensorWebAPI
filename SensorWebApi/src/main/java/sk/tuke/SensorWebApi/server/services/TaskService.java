@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.entities.*;
 import sk.tuke.SensorWebApi.server.repositories.*;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -20,26 +23,16 @@ public class TaskService
     private static final long DAY = 24 * 60 * 60 * 1000;
     private static final long WEEK = DAY * 7;
 
-    @Autowired
-    private DeskRepository deskRepository;
 
-    @Autowired
-    private ReportRepository reportRepository;
 
-    @Autowired
-    private DailyReportService dailyReportService;
-
-    @Autowired
-    private WeeklyReportService weeklyReportService;
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private DailyReportRepository dailyReportRepository;
-
-    @Autowired
-    private TeamService teamService;
+    @Autowired private DeskRepository deskRepository;
+    @Autowired private ReportRepository reportRepository;
+    @Autowired private DailyReportService dailyReportService;
+    @Autowired private WeeklyReportService weeklyReportService;
+    @Autowired private TeamRepository teamRepository;
+    @Autowired private DailyReportRepository dailyReportRepository;
+    @Autowired private MonthlyReportService monthlyReportService;
+    @Autowired private TeamService teamService;
 
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
@@ -64,6 +57,20 @@ public class TaskService
 
         List<Desk> allDesks = deskRepository.findAll();
         allDesks.forEach( desk -> weeklyReportService.generateReport(desk, startOfWeek, endOfWeek));
+    }
+
+    @Scheduled(cron = "0 0 2 1 * *")
+    public void generateMonthlyReports() {
+        logger.info("Running monthly reports task");
+
+        Date lastDay = DateUtils.atStartOfDay(new Date(System.currentTimeMillis() - DAY));
+
+        Date startOfLastMonth = Date.from(lastDay.toInstant().atZone(
+                ZoneId.systemDefault()).withDayOfMonth(1).toInstant());
+
+        List<Desk> allDesks = deskRepository.findAll();
+
+        allDesks.forEach( desk ->  monthlyReportService.generateDeskReport(desk, startOfLastMonth, new Date()));
     }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")

@@ -27,8 +27,11 @@ public class WeeklyReport
     @Column(name = "week")
     private Date week;
 
-    public WeeklyReport() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "monthlyReport")
+    private MonthlyReport monthlyReport;
+
+    public WeeklyReport() { }
 
     public WeeklyReport(List<DailyReport> dailyReportList, float averageOccupation, Date week) {
         this.dailyReportList = dailyReportList;
@@ -66,5 +69,21 @@ public class WeeklyReport
 
     public void setWeek(Date week) {
         this.week = week;
+    }
+
+    public Desk getDesk() {
+        return desk;
+    }
+
+    public void setDesk(Desk desk) {
+        this.desk = desk;
+    }
+
+    public MonthlyReport getMonthlyReport() {
+        return monthlyReport;
+    }
+
+    public void setMonthlyReport(MonthlyReport monthlyReport) {
+        this.monthlyReport = monthlyReport;
     }
 }
