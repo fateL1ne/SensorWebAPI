@@ -2,20 +2,20 @@ package sk.tuke.SensorWebApi.server.request;
 
 public class PutDeskRequest {
 
-    private String newName;
+    private String newTeam;
+    private String newOffice;
     private Long deskId;
 
     public PutDeskRequest() { }
 
+    public boolean isValid() { return (deskId != null && newOffice != null && newTeam != null); }
 
-    public boolean isValid() { return (deskId != null && newName != null); }
-
-    public String getNewName() {
-        return newName;
+    public String getNewTeam() {
+        return newTeam;
     }
 
-    public void setNewName(String newName) {
-        this.newName = newName;
+    public void setNewTeam(String newTeam) {
+        this.newTeam = newTeam;
     }
 
     public Long getDeskId() {
@@ -24,5 +24,13 @@ public class PutDeskRequest {
 
     public void setDeskId(Long deskId) {
         this.deskId = deskId;
+    }
+
+    public String getNewOffice() {
+        return newOffice;
+    }
+
+    public void setNewOffice(String newOffice) {
+        this.newOffice = newOffice;
     }
 }

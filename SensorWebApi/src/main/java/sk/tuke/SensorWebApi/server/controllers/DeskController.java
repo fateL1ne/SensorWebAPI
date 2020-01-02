@@ -36,8 +36,8 @@ public class DeskController
         return deskService.getDesksPerTeam(id);
     }
 
-    @PutMapping(value = "/editTeam")
-    public ResponseEntity editTeam(@RequestBody PutDeskRequest putDeskRequest) { return deskService.editTeam(putDeskRequest); }
+    @PutMapping(value = "/edit")
+    public ResponseEntity editDesk(@RequestBody PutDeskRequest putDeskRequest) { return deskService.editDesk(putDeskRequest); }
 
     @PostMapping(value = "/add")
     public ResponseEntity addDesk(@RequestBody NewDesk newDesk) { return deskService.addDesk(newDesk); }

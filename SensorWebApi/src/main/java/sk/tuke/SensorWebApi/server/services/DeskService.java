@@ -1,6 +1,5 @@
 package sk.tuke.SensorWebApi.server.services;
 
-import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,53 +78,60 @@ public class DeskService
     }
 
     public ResponseEntity addDesk(NewDesk newDesk) {
+        // trim leading and trailing whitespaces
+        String deskLabel = newDesk.getDeskLabel().trim();
         String teamName = newDesk.getTeamName();
         String officeName = newDesk.getOfficeName();
         Office office;
         Team team;
 
-        try {
-            office = officeRepository.findOneByOfficeName(officeName);
-            team = teamRepository.findOneByTeamName(teamName);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if(!newDesk.isValid()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        deskRepository.save(new Desk(generateLabel(office), team, office));
+        //if desk with this label already exists
+        if(deskRepository.findDeskByLabel(deskLabel) != null) {
+            return new ResponseEntity(HttpStatus.ALREADY_REPORTED);
+        }
+
+        office = officeRepository.findOneByOfficeName(officeName);
+        team = teamRepository.findOneByTeamName(teamName);
+        //find if request contains office and team that exists in database
+        if(office == null || team == null) {
+            return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        deskRepository.save(new Desk(deskLabel, team, office));
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    private String generateLabel(Office office) {
-        int actualDesksPerOffice = office.getDesks().size();
-        String officeName = office.getOfficeName();
-
-        if (actualDesksPerOffice < 9)
-            return officeName + "0" + (actualDesksPerOffice + 1);
-        else
-            return officeName + (actualDesksPerOffice + 1);
-    }
-
-
-    public ResponseEntity editTeam(PutDeskRequest putDeskRequest) {
+    public ResponseEntity editDesk(PutDeskRequest putDeskRequest) {
         Long id = putDeskRequest.getDeskId();
-        String newName = putDeskRequest.getNewName();
+        String newTeam = putDeskRequest.getNewTeam();
+        String newOffice = putDeskRequest.getNewOffice();
         Desk desk;
         Team team;
+        Office office;
+
+        if(!putDeskRequest.isValid()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
         try {
             desk = deskRepository.getOne(id);
-            team = teamRepository.findOneByTeamName(newName);
+            team = teamRepository.findOneByTeamName(newTeam);
+            office = officeRepository.findOneByOfficeName(newOffice);
             desk.setTeam(team);
+            desk.setOffice(office);
         } catch (EntityNotFoundException | NullPointerException e) {
-            logger.error("Can't assign the new team name " + newName + " for desk with ID: " + id);
+            logger.error("Can't assign the new team: " + newTeam + " or new office: " + newOffice + " for desk with ID: " + id);
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
 
         team.getDesks().add(desk);
+        office.getDesks().add(desk);
         deskRepository.save(desk);
-
 
         return new ResponseEntity(HttpStatus.OK);
     }
