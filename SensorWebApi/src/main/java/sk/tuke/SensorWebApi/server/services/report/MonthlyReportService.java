@@ -10,7 +10,6 @@ import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.GenericMonthRepo
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.MonthlyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
-import sk.tuke.SensorWebApi.server.jpa.entities.repositories.*;
 import sk.tuke.SensorWebApi.server.jpa.repositories.*;
 
 import java.util.Date;
