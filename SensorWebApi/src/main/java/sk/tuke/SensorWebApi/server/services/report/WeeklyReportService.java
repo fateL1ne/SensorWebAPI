@@ -11,6 +11,7 @@ import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportR
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 
 import java.text.SimpleDateFormat;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 
@@ -38,17 +39,20 @@ public class WeeklyReportService
         }
 
         float averageOccupation = countAverageOccupation(dailyReports);
-        WeeklyReport weeklyReport = new WeeklyReport(dailyReports, averageOccupation, desk, startWeek);
-
-        for (DailyReport dailyReport : dailyReports) {
-            dailyReport.setWeeklyReport(weeklyReport);
-            dailyReportRepository.save(dailyReport);
-        }
+        WeeklyReport weeklyReport = new WeeklyReport(averageOccupation, desk, startWeek, dailyReports);
 
         weeklyReportRepository.save(weeklyReport);
+
+        try {
+            dailyReports.forEach( dailyReport -> {
+                dailyReport.setWeeklyReport(weeklyReport);
+                dailyReportRepository.save(dailyReport);
+            });
+        } catch (ConcurrentModificationException e) {
+            System.out.println("(:");
+        }
+
     }
-
-
 
 
     private float countAverageOccupation(List<DailyReport> reports) {

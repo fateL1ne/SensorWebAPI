@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tuke.SensorWebApi.server.http.request.ReportRequest;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.GenericMonthReport;
 import sk.tuke.SensorWebApi.server.services.report.ReportService;
+
+import java.util.Date;
 
 
 @RestController
@@ -13,13 +16,17 @@ import sk.tuke.SensorWebApi.server.services.report.ReportService;
 public class ReportController
 {
 
-    @Autowired
-    private ReportService reportService;
+    @Autowired private ReportService reportService;
 
     @PostMapping(value = "/add")
     public ResponseEntity<HttpStatus> newReport(@RequestBody ReportRequest incomingRequest)
     {
         reportService.addReport(incomingRequest);
         return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/genericMonthReport/{month}")
+    public GenericMonthReport getGenericReport(@PathVariable Long month) {
+        return reportService.getGenericReport(new Date(month));
     }
 }

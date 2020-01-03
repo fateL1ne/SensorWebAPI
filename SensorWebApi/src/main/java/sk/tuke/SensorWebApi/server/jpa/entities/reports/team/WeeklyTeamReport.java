@@ -18,4 +18,6 @@ public class WeeklyTeamReport
     @Column(name = "averageOccupation")
     private float averageOccupation;
 
+
+
 }

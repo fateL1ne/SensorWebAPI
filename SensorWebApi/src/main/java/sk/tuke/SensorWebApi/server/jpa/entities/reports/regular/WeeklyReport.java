@@ -16,9 +16,6 @@ public class WeeklyReport
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "weeklyReport")
-    private List<DailyReport> dailyReportList = new ArrayList<>();
-
     @Column(name = "averageOccupation")
     private float averageOccupation;
 
@@ -29,23 +26,28 @@ public class WeeklyReport
     @Column(name = "week")
     private Date week;
 
+    @OneToMany(mappedBy = "weeklyReport", cascade = CascadeType.REMOVE)
+    private List<DailyReport> dailyReports = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "monthlyReport")
     private MonthlyReport monthlyReport;
 
     public WeeklyReport() { }
 
-    public WeeklyReport(List<DailyReport> dailyReportList, float averageOccupation, Desk desk, Date week) {
-        this.dailyReportList = dailyReportList;
+    public WeeklyReport(float averageOccupation, Desk desk, Date week, List<DailyReport> dailyReports) {
         this.averageOccupation = averageOccupation;
         this.desk = desk;
         this.week = week;
+        this.dailyReports = dailyReports;
     }
 
-    public WeeklyReport(List<DailyReport> dailyReportList, float averageOccupation, Date week) {
-        this.dailyReportList = dailyReportList;
-        this.averageOccupation = averageOccupation;
-        this.week = week;
+    public List<DailyReport> getDailyReports() {
+        return dailyReports;
+    }
+
+    public void setDailyReports(List<DailyReport> dailyReports) {
+        this.dailyReports = dailyReports;
     }
 
     public Long getId() {
@@ -54,14 +56,6 @@ public class WeeklyReport
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<DailyReport> getDailyReportList() {
-        return dailyReportList;
-    }
-
-    public void setDailyReportList(List<DailyReport> dailyReportList) {
-        this.dailyReportList = dailyReportList;
     }
 
     public float getAverageOccupation() {

@@ -2,7 +2,7 @@ package sk.tuke.SensorWebApi.server.services.core;
 
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
-import sk.tuke.SensorWebApi.server.jpa.entities.core.Report;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@ public class DailyReport
     private Desk desk;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "weeklyReportId")
+    @JoinColumn(name = "weeklyReport")
     private WeeklyReport weeklyReport;
 
     @Column(name = "average_occupation", nullable = false)
@@ -66,4 +66,6 @@ public class DailyReport
     public WeeklyReport getWeeklyReport() { return weeklyReport; }
 
     public void setWeeklyReport(WeeklyReport weeklyReport) { this.weeklyReport = weeklyReport; }
+
+
 }

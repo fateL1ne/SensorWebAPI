@@ -1,6 +1,8 @@
 package sk.tuke.SensorWebApi.server.services.report;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyRepor
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +35,12 @@ public class MonthlyReportService
     @Autowired private GenericMonthReportRepository genericMonthReportRepository;
     @Autowired private DeskRepository deskRepository;
     @Autowired private OfficeRepository officeRepository;
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd MMMMM EEEEE");
+
+
+    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+
 
     public void generateGenericReport(Date month)
     {
@@ -79,6 +89,13 @@ public class MonthlyReportService
     {
         List<WeeklyReport> weeklyReports = weeklyReportRepository
                 .findAllByWeekBetweenAndDesk(startMonth, endMonth, desk);
+
+        if (weeklyReports.isEmpty()) {
+            logger.warn("Can't find any weekly report per: " + DATE_FORMAT.format(startMonth) + " - " + DATE_FORMAT.format(endMonth));
+            logger.warn("Generating monthly report canceled");
+            return;
+        }
+
         float averageOccupation = 0.00f;
 
         for (WeeklyReport weeklyReport : weeklyReports)
@@ -86,14 +103,17 @@ public class MonthlyReportService
 
         averageOccupation /= weeklyReports.size();
 
-        MonthlyReport monthlyReport = new MonthlyReport(averageOccupation, weeklyReports, desk, startMonth);
-
-        weeklyReports.forEach( weeklyReport -> {
-            weeklyReport.setMonthlyReport(monthlyReport);
-            weeklyReportRepository.save(weeklyReport);
-        });
-
+        MonthlyReport monthlyReport = new MonthlyReport(averageOccupation, weeklyReports, desk, startMonth, desk.getTeam());
         monthlyReportRepository.save(monthlyReport);
+
+        try {
+            weeklyReports.forEach( weeklyReport -> {
+                weeklyReport.setMonthlyReport(monthlyReport);
+                weeklyReportRepository.save(weeklyReport);
+            });
+        } catch (ConcurrentModificationException e) {
+            System.out.println("(:");
+        }
     }
 
 

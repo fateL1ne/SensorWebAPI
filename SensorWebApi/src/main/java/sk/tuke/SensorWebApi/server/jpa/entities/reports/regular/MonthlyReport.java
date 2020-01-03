@@ -2,6 +2,7 @@ package sk.tuke.SensorWebApi.server.jpa.entities.reports.regular;
 
 
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,8 +21,12 @@ public class MonthlyReport
     @Column(name = "averageOccupation")
     private float averageOccupation;
 
-    @OneToMany(mappedBy = "monthlyReport")
+    @OneToMany(mappedBy = "monthlyReport", cascade = CascadeType.REMOVE)
     private List<WeeklyReport> weeklyReportList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "teamId")
+    private Team team;
 
     @ManyToOne
     @JoinColumn(name = "deskId")
@@ -32,11 +37,12 @@ public class MonthlyReport
 
     public MonthlyReport() { }
 
-    public MonthlyReport(float averageOccupation, List<WeeklyReport> weeklyReportList, Desk desk, Date month) {
+    public MonthlyReport(float averageOccupation, List<WeeklyReport> weeklyReportList, Desk desk, Date month, Team team) {
         this.averageOccupation = averageOccupation;
         this.weeklyReportList = weeklyReportList;
         this.desk = desk;
         this.month = month;
+        this.team = team;
     }
 
     public Long getId() {
@@ -77,5 +83,13 @@ public class MonthlyReport
 
     public void setMonth(Date month) {
         this.month = month;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

@@ -30,6 +30,9 @@ public class MonthlyTeamReport {
     @OneToMany(mappedBy = "monthlyReport")
     private List<WeeklyReport> weeklyReportList = new ArrayList<>();
 
+    public MonthlyTeamReport() {
+    }
+
     public MonthlyTeamReport(Team team, Float averageOccupation, Date month) {
         this.team = team;
         this.averageOccupation = averageOccupation;

@@ -1,6 +1,7 @@
-package sk.tuke.SensorWebApi.server.jpa.entities.core;
+package sk.tuke.SensorWebApi.server.jpa.entities.reports.regular;
 
 import org.hibernate.annotations.Immutable;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 
 import javax.persistence.*;
 import java.util.Date;

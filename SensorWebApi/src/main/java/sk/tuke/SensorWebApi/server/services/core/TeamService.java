@@ -18,15 +18,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class TeamService {
-    private TeamRepository teamRepository;
-
-    @Autowired
-    public TeamService(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
-
-
+public class TeamService
+{
+    @Autowired private TeamRepository teamRepository;
     @Autowired private DailyTeamReportRepository dailyTeamReportRepository;
     @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
 
@@ -35,13 +29,21 @@ public class TeamService {
         return new TeamsResponse(teamRepository.findAll());
     }
 
+
+    public DailyTeamReportsResponse getDailyTeamReports(Date day) {
+        return new DailyTeamReportsResponse(dailyTeamReportRepository.findAllByDay(DateUtils.atStartOfDay(day)));
+    }
+
+    public MonthlyTeamReportsResponse getMonthlyReports(Date month) {
+        return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAll());
+    }
+
     public List<String> getTeamNames() {
         List<String> teamNames = new ArrayList<>();
         this.teamRepository.findAll().forEach( t -> teamNames.add(t.getTeamName()));
 
         return teamNames;
     }
-
 
     public void generateDailyReport(Team team, List<DailyReport> dailyReports, Date day) {
         float occupation = 0;
@@ -58,16 +60,6 @@ public class TeamService {
         float averageOccupation = occupation / size;
 
         dailyTeamReportRepository.save(new DailyTeamReport(team, day, averageOccupation));
-    }
-
-
-    public DailyTeamReportsResponse getDailyTeamReports(Date day) {
-        return new DailyTeamReportsResponse(dailyTeamReportRepository.findAllByDay(DateUtils.atStartOfDay(day)));
-    }
-
-
-    public MonthlyTeamReportsResponse getMonthlyReports(Date month) {
-        return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAllByMonth(month));
     }
 
 }

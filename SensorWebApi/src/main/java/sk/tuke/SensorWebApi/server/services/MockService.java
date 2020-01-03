@@ -4,12 +4,16 @@ import com.github.rkumsher.date.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
-import sk.tuke.SensorWebApi.server.jpa.entities.core.Report;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
@@ -39,6 +43,9 @@ public class MockService
     @Autowired private MonthlyReportService monthlyReportService;
     @Autowired private TeamService teamService;
     @Autowired private WeeklyReportRepository weeklyReportRepository;
+    @Autowired private MonthlyReportRepository monthlyReportRepository;
+    @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
+
 
 
     public void init() {
@@ -56,7 +63,41 @@ public class MockService
 
         Date D2 =calendarEnd.getTime();
 
-        genWeekReport(D1, D2);
+        genMonReport(D1, D2);
+    }
+
+
+    public void removeWeek() {
+
+        Calendar calendarEnd=Calendar.getInstance();
+        calendarEnd.set(Calendar.YEAR,2019);
+        calendarEnd.set(Calendar.MONTH,1);
+        calendarEnd.set(Calendar.DAY_OF_MONTH,0);
+        calendarEnd.set(Calendar.HOUR, 0);
+        calendarEnd.set(Calendar.MINUTE, 0);
+        calendarEnd.set(Calendar.SECOND, 0);
+
+        Date d1 =calendarEnd.getTime();
+
+        calendarEnd.set(Calendar.MONTH, 2);
+
+        Date d2 =calendarEnd.getTime();
+
+
+        List<DailyReport> dailyReports = dailyReportRepository.findAllByDayBetween(d1, d2);
+
+        for (DailyReport dailyReport : dailyReports) {
+            dailyReport.setWeeklyReport(null);
+            dailyReportRepository.save(dailyReport);
+        }
+
+        List<WeeklyReport> weeklyReports = weeklyReportRepository.findAllByWeekBetween(d1, d2);
+
+        for (WeeklyReport weeklyReport : weeklyReports) {
+            weeklyReportRepository.delete(weeklyReport);
+        }
+
+
     }
 
     public  void mockME(Date d1, Date d2) {

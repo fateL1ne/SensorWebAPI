@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
-import sk.tuke.SensorWebApi.server.jpa.entities.core.Report;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.MonthlyReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
@@ -41,6 +45,9 @@ public class TaskService
     @Autowired private DailyReportRepository dailyReportRepository;
     @Autowired private MonthlyReportService monthlyReportService;
     @Autowired private TeamService teamService;
+    @Autowired private MonthlyReportRepository monthlyReportRepository;
+    @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
+
 
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
     public void generateDailyReports() {
@@ -79,6 +86,32 @@ public class TaskService
         List<Desk> allDesks = deskRepository.findAll();
 
         allDesks.forEach( desk ->  monthlyReportService.generateDeskReport(desk, startOfLastMonth, new Date()));
+    }
+
+
+//    @Scheduled(cron = "0 30 2 1 * *")
+    public void generateMonthlyTeamReports() {
+        logger.info("Running monthly team reports task");
+
+        // TODO: 1/3/20 FETCH ALL FOR THE SPECIFIC MONTH
+
+        List<Team> teams = teamRepository.findAll();
+
+        teams.forEach( T -> {
+
+            List<MonthlyReport> monthlyReports = monthlyReportRepository.findAllByTeam(T);
+
+            if (!monthlyReports.isEmpty()) {
+
+                float averageOccupation = 0.00f;
+
+                for (MonthlyReport monthlyReport : monthlyReports)
+                    averageOccupation += monthlyReport.getAverageOccupation();
+
+                averageOccupation /= monthlyReports.size();
+                monthlyTeamReportRepository.save(new MonthlyTeamReport(T, averageOccupation, monthlyReports.get(0).getMonth()));
+            }
+        });
     }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
