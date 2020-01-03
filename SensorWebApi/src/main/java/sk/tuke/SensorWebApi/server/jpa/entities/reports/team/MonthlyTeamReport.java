@@ -26,7 +26,7 @@ public class MonthlyTeamReport {
     @Column(name = "month")
     private Date month;
 
-    @OneToMany(mappedBy = "monthlyTeamReport")
+    @OneToMany(mappedBy = "monthlyTeamReport", cascade = CascadeType.REMOVE)
     private List<WeeklyTeamReport> weeklyTeamReports = new ArrayList<>();
 
     public MonthlyTeamReport() {

@@ -23,7 +23,6 @@ import java.util.Random;
 public class TaskService
 {
     private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
-    private static final long DAY = 24 * 60 * 60 * 1000;
 
     @Autowired private DateService dateService;
     @Autowired private DeskRepository deskRepository;
@@ -73,13 +72,13 @@ public class TaskService
         Date endOfMonth = dateService.getEndOfLastMonth();
 
         List<Desk> allDesks = deskRepository.findAll();
-
         allDesks.forEach( desk -> monthlyReportService.generateDeskReport(desk, startOfMonth, endOfMonth));
 
+        logger.info("Generating monthly team reports");
 
-
+        List<Team> allTeams = teamRepository.findAll();
+        allTeams.forEach( team -> monthlyReportService.generateTeamReport(startOfMonth, endOfMonth, team));
     }
-
 
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
