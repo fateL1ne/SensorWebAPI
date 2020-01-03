@@ -1,15 +1,17 @@
 package sk.tuke.SensorWebApi.server.services.report;
 
-import com.github.rkumsher.date.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.services.core.TimelineService;
 
 import java.text.SimpleDateFormat;
@@ -30,32 +32,53 @@ public class DailyReportService
     private final String NEW_LINE = System.lineSeparator();
 
 
-    @Autowired
-    private DailyReportRepository dailyReportRepository;
+    @Autowired private DailyReportRepository dailyReportRepository;
+    @Autowired private ReportRepository reportRepository;
+    @Autowired private TimelineService timelineService;
+    @Autowired private DailyTeamReportRepository dailyTeamReportRepository;
 
-    @Autowired
-    private ReportRepository reportRepository;
-
-    @Autowired
-    private TimelineService timelineService;
 
     public DailyReportService() { }
 
-    public void generateReport(Desk desk, Date day) {
-        List<Report> reports = reportRepository.findAllByTimestampBetweenAndDesk(
-                DateUtils.atStartOfDay(day), new Date(System.currentTimeMillis()), desk);
+    public void generateDeskReport(Desk desk, Date day) {
+        List<Report> reports = reportRepository.findAllByTimestampBetweenAndDesk(day, new Date(), desk);
 
         if (reports.isEmpty()) {
             logger.warn("Cant' find any reports per day " + DATE_FORMAT.format(day));
+            logger.warn("Generating report per desk " + desk.toString() + " canceled");
             return;
         }
 
         float averageOccupation = getAverageOccupation(reports);
         long timeline = timelineService.generateTimeline(reports);
-        DailyReport newReport = new DailyReport(desk, averageOccupation, DateUtils.atStartOfDay(day), timeline);
 
+        DailyReport newReport = new DailyReport(desk, averageOccupation, day, timeline);
         dailyReportRepository.save(newReport);
-        logger.info(stringify(newReport));
+
+        logger.info("--------- CREATED ------------");
+        logger.info(newReport.toString());
+    }
+
+
+    public void generateTeamReport(Team team, Date day)
+    {
+        float occupation = 0.00f;
+        List<DailyReport> dailyReports = dailyReportRepository.findAllByDayAndDesk_Team(day, team);
+
+        if(dailyReports.isEmpty()) {
+            logger.error("Can't find any daily reports for team " + team.getTeamName() + "at day " + DATE_FORMAT.format(day));
+            logger.error("Generating team report canceled");
+            return;
+        }
+
+        for ( DailyReport dailyReport : dailyReports ) occupation += dailyReport.getAverageOccupation();
+        occupation /= dailyReports.size();
+
+        DailyTeamReport dailyTeamReport = new DailyTeamReport(team, day, occupation);
+        dailyTeamReportRepository.save(dailyTeamReport);
+
+        logger.info(" ---- CREATED ----");
+        logger.info(dailyTeamReport.toString());
     }
 
     private float getAverageOccupation(List<Report> reports) {

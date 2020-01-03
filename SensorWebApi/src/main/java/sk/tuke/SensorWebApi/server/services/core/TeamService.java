@@ -1,18 +1,18 @@
 package sk.tuke.SensorWebApi.server.services.core;
 
 import com.github.rkumsher.date.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.http.response.DailyTeamReportsResponse;
 import sk.tuke.SensorWebApi.server.http.response.MonthlyTeamReportsResponse;
 import sk.tuke.SensorWebApi.server.http.response.TeamsResponse;
-import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
-import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
-import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +20,13 @@ import java.util.List;
 @Service
 public class TeamService
 {
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd MMMMM EEEEE");
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
+
     @Autowired private TeamRepository teamRepository;
     @Autowired private DailyTeamReportRepository dailyTeamReportRepository;
     @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
-
 
     public TeamsResponse fetchAll() {
         return new TeamsResponse(teamRepository.findAll());
@@ -45,21 +48,5 @@ public class TeamService
         return teamNames;
     }
 
-    public void generateDailyReport(Team team, List<DailyReport> dailyReports, Date day) {
-        float occupation = 0;
-        int size = 0;
-
-        for(DailyReport dailyReport : dailyReports) {
-            if(dailyReport.getDesk().getTeam() == team) {
-                occupation += dailyReport.getAverageOccupation();
-                System.out.println(dailyReport.getDesk().getLabel());
-                ++size;
-            }
-        }
-
-        float averageOccupation = occupation / size;
-
-        dailyTeamReportRepository.save(new DailyTeamReport(team, day, averageOccupation));
-    }
 
 }

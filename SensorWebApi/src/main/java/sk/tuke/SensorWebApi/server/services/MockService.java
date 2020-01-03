@@ -7,13 +7,16 @@ import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.TeamRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.WeeklyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
@@ -45,6 +48,7 @@ public class MockService
     @Autowired private WeeklyReportRepository weeklyReportRepository;
     @Autowired private MonthlyReportRepository monthlyReportRepository;
     @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
+    @Autowired private WeeklyTeamReportRepository weeklyTeamReportRepository;
 
 
 
@@ -132,8 +136,23 @@ public class MockService
 
         for (Desk desk : allDesks) {
             for (long i = m1; i <= m2; i += DAY) {
-                dailyReportService.generateReport(desk, new Date(i));
+                dailyReportService.generateDeskReport(desk, new Date(i));
             }
+        }
+    }
+
+    public  void genWeekTeamReport() {
+        List<MonthlyTeamReport>  monthlyTeamReportList = monthlyTeamReportRepository.findAll();
+
+
+        for (MonthlyTeamReport monthlyTeamReport : monthlyTeamReportList) {
+            List<WeeklyTeamReport> weeklyReports = monthlyTeamReport.getWeeklyReportList();
+            float oa = 0.00f;
+            for (WeeklyTeamReport weeklyReport : weeklyReports) {
+                oa += weeklyReport.getAverageOccupation();
+            }
+            oa /= weeklyReports.size();
+            weeklyTeamReportRepository.save(new sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport(monthlyTeamReport.getMonth(), oa));
         }
     }
 
@@ -145,7 +164,7 @@ public class MockService
 
         for (Desk desk : allDesks) {
             for (long i = m1; i <= m2; i += WEEK) {
-                weeklyReportService.generateReport(desk, new Date(i), DateUtils.atEndOfDay(new Date(i + WEEK - 3600)));
+                weeklyReportService.generateDeskReport(desk, new Date(i), DateUtils.atEndOfDay(new Date(i + WEEK - 3600)));
             }
         }
     }

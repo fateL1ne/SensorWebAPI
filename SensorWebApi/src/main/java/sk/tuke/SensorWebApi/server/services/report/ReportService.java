@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.GenericMonthReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
-import sk.tuke.SensorWebApi.server.jpa.repositories.DeskRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.ReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
 import sk.tuke.SensorWebApi.server.http.request.ReportRequest;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.GenericMonthReportRepository;
 

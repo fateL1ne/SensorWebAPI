@@ -23,14 +23,17 @@ public class DailyTeamReport
     @Column(name = "avarage_occuption", nullable = false)
     private Float averageOccupation;
 
+    @ManyToOne
+    @JoinColumn(name = "weeklyTeamReport")
+    private WeeklyTeamReport weeklyTeamReport;
+
     public DailyTeamReport(Team team, Date day, Float averageOccupation) {
         this.team = team;
         this.day = day;
         this.averageOccupation = averageOccupation;
     }
 
-    public DailyTeamReport() {
-    }
+    public DailyTeamReport() { }
 
     public Long getId() {
         return id;
@@ -62,6 +65,14 @@ public class DailyTeamReport
 
     public void setAverageOccupation(Float averageOccupation) {
         this.averageOccupation = averageOccupation;
+    }
+
+    public WeeklyTeamReport getWeeklyTeamReport() {
+        return weeklyTeamReport;
+    }
+
+    public void setWeeklyTeamReport(WeeklyTeamReport weeklyTeamReport) {
+        this.weeklyTeamReport = weeklyTeamReport;
     }
 
 

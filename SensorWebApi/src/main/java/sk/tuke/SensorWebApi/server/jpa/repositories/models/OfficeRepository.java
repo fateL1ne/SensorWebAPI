@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.jpa.repositories;
+package sk.tuke.SensorWebApi.server.jpa.repositories.models;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;

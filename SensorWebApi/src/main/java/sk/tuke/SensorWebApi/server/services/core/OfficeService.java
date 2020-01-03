@@ -3,7 +3,7 @@ package sk.tuke.SensorWebApi.server.services.core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
-import sk.tuke.SensorWebApi.server.jpa.repositories.OfficeRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeRepository;
 
 import java.util.ArrayList;
 import java.util.List;

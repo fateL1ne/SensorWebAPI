@@ -2,7 +2,6 @@ package sk.tuke.SensorWebApi.server.jpa.entities.reports.team;
 
 
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
-import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,16 +20,23 @@ public class MonthlyTeamReport {
     @JoinColumn(name = "teamId", nullable = false)
     private Team team;
 
-    @Column(name = "avarage_occuption", nullable = false)
+    @Column(name = "average_occupation", nullable = false)
     private Float averageOccupation;
 
     @Column(name = "month")
     private Date month;
 
-    @OneToMany(mappedBy = "monthlyReport")
-    private List<WeeklyReport> weeklyReportList = new ArrayList<>();
+    @OneToMany(mappedBy = "monthlyTeamReport")
+    private List<WeeklyTeamReport> weeklyTeamReports = new ArrayList<>();
 
     public MonthlyTeamReport() {
+    }
+
+    public MonthlyTeamReport(Team team, Float averageOccupation, Date month, List<WeeklyTeamReport> weeklyReportList) {
+        this.team = team;
+        this.averageOccupation = averageOccupation;
+        this.month = month;
+        this.weeklyTeamReports = weeklyReportList;
     }
 
     public MonthlyTeamReport(Team team, Float averageOccupation, Date month) {
@@ -71,11 +77,13 @@ public class MonthlyTeamReport {
         this.month = month;
     }
 
-    public List<WeeklyReport> getWeeklyReportList() {
-        return weeklyReportList;
+    public List<WeeklyTeamReport> getWeeklyReportList() {
+        return weeklyTeamReports;
     }
 
-    public void setWeeklyReportList(List<WeeklyReport> weeklyReportList) {
-        this.weeklyReportList = weeklyReportList;
+    public void setWeeklyReportList(List<WeeklyTeamReport> weeklyReportList) {
+        this.weeklyTeamReports = weeklyReportList;
     }
+
+
 }

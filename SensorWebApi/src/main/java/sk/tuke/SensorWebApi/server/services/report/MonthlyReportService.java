@@ -12,11 +12,15 @@ import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.GenericMonthRepo
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.MonthlyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
-import sk.tuke.SensorWebApi.server.jpa.repositories.*;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.GenericMonthReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.WeeklyTeamReportRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.ConcurrentModificationException;
@@ -31,10 +35,11 @@ public class MonthlyReportService
     @Autowired private MonthlyReportRepository monthlyReportRepository;
     @Autowired private WeeklyReportRepository weeklyReportRepository;
     @Autowired private TeamRepository teamRepository;
-    @Autowired private MonthlyTeamReportRepository teamReportRepository;
+    @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
     @Autowired private GenericMonthReportRepository genericMonthReportRepository;
     @Autowired private DeskRepository deskRepository;
     @Autowired private OfficeRepository officeRepository;
+    @Autowired private WeeklyTeamReportRepository weeklyTeamReportRepository;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd MMMMM EEEEE");
 
@@ -45,7 +50,7 @@ public class MonthlyReportService
     public void generateGenericReport(Date month)
     {
 
-        List<MonthlyTeamReport> list = teamReportRepository.findAll();
+        List<MonthlyTeamReport> list = monthlyTeamReportRepository.findAll();
 
         float occupation = 0.00f;
 
@@ -54,7 +59,7 @@ public class MonthlyReportService
 
         occupation /= list.size();
 
-        teamReportRepository.findAll();
+        monthlyTeamReportRepository.findAll();
 
         genericMonthReportRepository.save(
                 new GenericMonthReport(
@@ -66,33 +71,44 @@ public class MonthlyReportService
         );
     }
 
-    public void generateTeamReport(Date month)
+    public void generateTeamReport(Date startMonth, Date endMonth, Team team)
     {
-        List<Team> teams = teamRepository.findAll();
+        List<WeeklyTeamReport> weeklyTeamReports = weeklyTeamReportRepository.findAllByWeekBetweenAndTeam(startMonth, endMonth, team);
 
-        teams.forEach( team ->
-        {
-            List<Desk> desks = team.getDesks();
-            float occupation = 0.00f;
+        if (weeklyTeamReports.isEmpty()) {
+            logger.error("MONTHLY TEAM REPORT");
+            logger.error("Can't find any weekly report per: " + DATE_FORMAT.format(startMonth) + " - " + DATE_FORMAT.format(endMonth));
+            logger.error("Generating monthly report canceled");
+            return;
+        }
 
-            for (Desk desk : desks) {
-                occupation += monthlyReportRepository.findByDesk(desk).getAverageOccupation();
-            }
+        float averageOccupation = 0.00f;
 
-            occupation /= desks.size();
+        for (WeeklyTeamReport weeklyTeamReport : weeklyTeamReports) averageOccupation += weeklyTeamReport.getAverageOccupation();
+        averageOccupation /= weeklyTeamReports.size();
 
-           teamReportRepository.save(new MonthlyTeamReport(team, occupation, month));
-        });
+        MonthlyTeamReport monthlyTeamReport = new MonthlyTeamReport(team, averageOccupation, startMonth, weeklyTeamReports);
+        monthlyTeamReportRepository.save(monthlyTeamReport);
+
+        try {
+            weeklyTeamReports.forEach(weeklyReport -> {
+                weeklyReport.setMonthlyTeamReport(monthlyTeamReport);
+                monthlyTeamReportRepository.save(monthlyTeamReport);
+            });
+        } catch (ConcurrentModificationException e) {
+            System.out.println("(:");
+        }
+
     }
 
     public void generateDeskReport(Desk desk, Date startMonth, Date endMonth)
     {
-        List<WeeklyReport> weeklyReports = weeklyReportRepository
-                .findAllByWeekBetweenAndDesk(startMonth, endMonth, desk);
+        List<WeeklyReport> weeklyReports = weeklyReportRepository.findAllByWeekBetweenAndDesk(startMonth, endMonth, desk);
 
         if (weeklyReports.isEmpty()) {
-            logger.warn("Can't find any weekly report per: " + DATE_FORMAT.format(startMonth) + " - " + DATE_FORMAT.format(endMonth));
-            logger.warn("Generating monthly report canceled");
+            logger.error("MONTHLY DESK REPORT");
+            logger.error("Can't find any weekly report per: " + DATE_FORMAT.format(startMonth) + " - " + DATE_FORMAT.format(endMonth));
+            logger.error("Generating monthly report canceled");
             return;
         }
 
@@ -107,7 +123,7 @@ public class MonthlyReportService
         monthlyReportRepository.save(monthlyReport);
 
         try {
-            weeklyReports.forEach( weeklyReport -> {
+            weeklyReports.forEach(weeklyReport -> {
                 weeklyReport.setMonthlyReport(monthlyReport);
                 weeklyReportRepository.save(weeklyReport);
             });

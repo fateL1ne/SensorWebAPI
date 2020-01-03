@@ -43,7 +43,7 @@ public class TeamController {
     @GetMapping(value = "/dummy")
     public void dummy() {
 
-       mockService.init();
+       mockService.genWeekTeamReport();
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Persona;
-import sk.tuke.SensorWebApi.server.jpa.repositories.UserRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.UserRepository;
 
 import java.util.ArrayList;
 
