@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services;
+package sk.tuke.SensorWebApi.server.services.helpers;
 
 
 import com.github.rkumsher.date.DateUtils;
@@ -39,8 +39,7 @@ public class DateService {
         return DateUtils.atStartOfDay(endOfLastWeek);
     }
 
-    public Date getStartOfLastMonth()
-    {
+    public Date getStartOfLastMonth() {
         calendar.add(Calendar.MONTH, -1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -61,11 +60,11 @@ public class DateService {
 
     /**
      *
-     *   -----------> FOR TESTING/MOCKING PURPOSES
+     *  ---> FOR TESTING/MOCKING PURPOSES
      *
-     * @param year
-     * @param month
-     * @param day
+     * @param year ##
+     * @param month ##
+     * @param day ##
      * @return specific day in date format
      *
      */
@@ -79,6 +78,6 @@ public class DateService {
 
         calendar.setTime(new Date(System.currentTimeMillis()));
 
-        return dayDate;
+        return DateUtils.atStartOfDay(dayDate);
     }
 }

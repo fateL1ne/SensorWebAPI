@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sk.tuke.SensorWebApi.server.http.response.DailyTeamReportsResponse;
 import sk.tuke.SensorWebApi.server.http.response.MonthlyTeamReportsResponse;
 import sk.tuke.SensorWebApi.server.http.response.TeamsResponse;
-import sk.tuke.SensorWebApi.server.services.MockService;
+import sk.tuke.SensorWebApi.server.services.helpers.MockService;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 
 import java.util.Date;
@@ -39,11 +39,7 @@ public class TeamController {
     @GetMapping(value = "/monthlyReports/{month}", produces = { MediaType.APPLICATION_JSON_VALUE})
     public MonthlyTeamReportsResponse getMonthlyReports(@PathVariable Long month) { return teamService.getMonthlyReports(new Date(month)); }
 
-
     @GetMapping(value = "/dummy")
-    public void dummy() {
-
-       mockService.genWeekTeamReport();
-    }
+    public void dummy() { mockService.init(); }
 
 }

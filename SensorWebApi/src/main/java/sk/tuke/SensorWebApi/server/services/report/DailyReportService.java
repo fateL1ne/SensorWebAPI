@@ -82,7 +82,7 @@ public class DailyReportService
     }
 
     private float getAverageOccupation(List<Report> reports) {
-        float occupiedIntervals = 0;
+        float occupiedIntervals = 0.00f;
 
         for (Report report: reports) {
             if(report.isOccupied()) {

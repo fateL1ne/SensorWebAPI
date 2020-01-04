@@ -95,4 +95,6 @@ public class WeeklyTeamReport
     public void setTeam(Team team) {
         this.team = team;
     }
+
+
 }

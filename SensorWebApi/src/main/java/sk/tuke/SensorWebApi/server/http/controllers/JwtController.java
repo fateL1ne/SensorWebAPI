@@ -20,14 +20,9 @@ public class JwtController
 {
     private static Logger logger = LoggerFactory.getLogger(JwtController.class.getName());
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserProviderService userProviderService;
-
-    @Autowired
-    private JwtProvider jwtProvider;
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private UserProviderService userProviderService;
+    @Autowired private JwtProvider jwtProvider;
 
     @RequestMapping(value = "/authJWT", method = RequestMethod.POST)
     public ResponseEntity<?> createJWT(@RequestBody JwtRequest jwtRequest) throws Exception

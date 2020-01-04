@@ -11,6 +11,7 @@ import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
+import sk.tuke.SensorWebApi.server.services.helpers.DateService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
 import sk.tuke.SensorWebApi.server.services.report.WeeklyReportService;
@@ -61,6 +62,8 @@ public class TaskService
 
         logger.info("Generating  weekly desk reports");
 
+        List<Team> allTeams = teamRepository.findAll();
+        allTeams.forEach( team -> weeklyReportService.generateTeamReport(team, startOfWeek, endOfWeek));
 
     }
 

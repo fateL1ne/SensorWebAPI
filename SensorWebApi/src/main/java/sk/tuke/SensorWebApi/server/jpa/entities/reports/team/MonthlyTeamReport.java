@@ -1,6 +1,5 @@
 package sk.tuke.SensorWebApi.server.jpa.entities.reports.team;
 
-
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 
 import javax.persistence.*;
@@ -10,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "monthly_team_report")
-public class MonthlyTeamReport {
+public class MonthlyTeamReport
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,6 +84,15 @@ public class MonthlyTeamReport {
     public void setWeeklyReportList(List<WeeklyTeamReport> weeklyReportList) {
         this.weeklyTeamReports = weeklyReportList;
     }
+
+    public List<WeeklyTeamReport> getWeeklyTeamReports() {
+        return weeklyTeamReports;
+    }
+
+    public void setWeeklyTeamReports(List<WeeklyTeamReport> weeklyTeamReports) {
+        this.weeklyTeamReports = weeklyTeamReports;
+    }
+
 
 
 }

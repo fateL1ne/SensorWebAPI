@@ -17,8 +17,7 @@ import sk.tuke.SensorWebApi.server.services.core.DeskService;
 @RequestMapping(value = "/desks", produces = { MediaType.APPLICATION_JSON_VALUE })
 public class DeskController
 {
-    @Autowired
-    private DeskService deskService;
+    @Autowired private DeskService deskService;
 
     @GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DesksResponse getAllDesks() {

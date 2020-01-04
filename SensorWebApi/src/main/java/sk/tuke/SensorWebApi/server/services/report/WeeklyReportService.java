@@ -9,6 +9,7 @@ import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
@@ -49,13 +50,12 @@ public class WeeklyReportService
         logger.info(weeklyReport.toString());
 
         try {
-            dailyReports.forEach( dailyReport -> {
-                dailyReport.setWeeklyReport(weeklyReport);
-                dailyReportRepository.save(dailyReport);
-            });
+            dailyReports.forEach( dailyReport -> dailyReport.setWeeklyReport(weeklyReport));
+            dailyReports.forEach( dailyReport -> dailyReportRepository.save(dailyReport));
         } catch (ConcurrentModificationException e) {
-            System.out.println("just another smile (:");
+            System.out.println(":(");
         }
+
     }
 
     public void generateTeamReport(Team team, Date startWeek, Date endWeek) {
@@ -70,22 +70,18 @@ public class WeeklyReportService
 
         float averageOccupation = getOccupation(dailyTeamReports);
 
-        sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport weeklyTeamReport = new sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport(startWeek, averageOccupation, team, dailyTeamReports);
+        WeeklyTeamReport weeklyTeamReport = new WeeklyTeamReport(startWeek, averageOccupation, team, dailyTeamReports);
         weeklyTeamReportRepository.save(weeklyTeamReport);
 
         logger.info(" ---- CREATED ----");
         logger.info(weeklyTeamReport.toString());
 
         try {
-            dailyTeamReports.forEach( dailyTeamReport -> {
-                dailyTeamReport.setWeeklyTeamReport(weeklyTeamReport);
-                dailyTeamReportRepository.save(dailyTeamReport);
-            });
+            dailyTeamReports.forEach( dailyTeamReport -> dailyTeamReport.setWeeklyTeamReport(weeklyTeamReport) );
+            dailyTeamReports.forEach( dailyTeamReport -> dailyTeamReportRepository.save(dailyTeamReport) );
         } catch (ConcurrentModificationException e) {
-            System.out.println("just another smile (:");
+            System.out.println(":(");
         }
-
-
     }
 
     private float getOccupation(List<DailyTeamReport> reports) {

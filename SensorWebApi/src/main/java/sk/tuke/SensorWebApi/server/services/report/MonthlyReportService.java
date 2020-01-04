@@ -93,7 +93,7 @@ public class MonthlyReportService
         try {
             weeklyTeamReports.forEach(weeklyReport -> {
                 weeklyReport.setMonthlyTeamReport(monthlyTeamReport);
-                monthlyTeamReportRepository.save(monthlyTeamReport);
+                weeklyTeamReportRepository.save(weeklyReport);
             });
         } catch (ConcurrentModificationException e) {
             System.out.println("(:");
