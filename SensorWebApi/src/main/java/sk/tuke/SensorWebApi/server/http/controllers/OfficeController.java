@@ -14,11 +14,9 @@ import java.util.List;
 @RequestMapping(value = "/offices", consumes = "application/json", produces = "application/json")
 public class OfficeController {
 
-    @Autowired
-    private OfficeService officeService;
+    @Autowired private OfficeService officeService;
 
     @GetMapping(value = "/names", produces = { MediaType.APPLICATION_JSON_VALUE })
     public List<String> officeNames() { return officeService.getOfficeNames(); }
-
 
 }

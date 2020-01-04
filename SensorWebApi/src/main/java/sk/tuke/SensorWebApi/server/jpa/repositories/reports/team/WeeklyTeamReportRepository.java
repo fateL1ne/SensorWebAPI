@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface WeeklyTeamReportRepository extends JpaRepository<WeeklyTeamReport, Long> {
     List<WeeklyTeamReport> findAllByWeekBetweenAndTeam(Date d1, Date d2, Team team);
+    List<WeeklyTeamReport> findAllByWeek(Date date);
 }

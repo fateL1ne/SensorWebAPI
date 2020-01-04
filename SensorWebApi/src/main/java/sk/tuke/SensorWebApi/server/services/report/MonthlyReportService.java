@@ -8,15 +8,10 @@ import org.springframework.stereotype.Service;
 
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
-import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.GenericMonthReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.MonthlyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.WeeklyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport;
-import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
-import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.GenericMonthReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.MonthlyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.WeeklyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
@@ -34,42 +29,12 @@ public class MonthlyReportService
 
     @Autowired private MonthlyReportRepository monthlyReportRepository;
     @Autowired private WeeklyReportRepository weeklyReportRepository;
-    @Autowired private TeamRepository teamRepository;
     @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
-    @Autowired private GenericMonthReportRepository genericMonthReportRepository;
-    @Autowired private DeskRepository deskRepository;
-    @Autowired private OfficeRepository officeRepository;
     @Autowired private WeeklyTeamReportRepository weeklyTeamReportRepository;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd MMMMM EEEEE");
-
-
     private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-
-    public void generateGenericReport(Date month)
-    {
-
-        List<MonthlyTeamReport> list = monthlyTeamReportRepository.findAll();
-
-        float occupation = 0.00f;
-
-        for (MonthlyTeamReport monthlyTeamReport : list)
-            occupation += monthlyTeamReport.getAverageOccupation();
-
-        occupation /= list.size();
-
-        monthlyTeamReportRepository.findAll();
-
-        genericMonthReportRepository.save(
-                new GenericMonthReport(
-                        deskRepository.findAll().size(),
-                        teamRepository.findAll().size(),
-                        officeRepository.findAll().size(),
-                        occupation
-                )
-        );
-    }
 
     public void generateTeamReport(Date startMonth, Date endMonth, Team team)
     {

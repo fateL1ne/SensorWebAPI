@@ -14,7 +14,16 @@ public class DateService {
     private final long DAY = 24 * 60 * 60 * 1000;
     private final Calendar calendar = Calendar.getInstance(new Locale("en","UK"));
 
-    public DateService() { }
+    public DateService() { };
+
+    public Date getStartOfNextMonth() {
+        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 0);
+
+        Date startOfNextMonth = calendar.getTime();
+
+        return DateUtils.atStartOfDay(startOfNextMonth);
+    }
 
     public Date getYesterday() {
         return DateUtils.atStartOfDay( new Date( System.currentTimeMillis() - DAY) );
