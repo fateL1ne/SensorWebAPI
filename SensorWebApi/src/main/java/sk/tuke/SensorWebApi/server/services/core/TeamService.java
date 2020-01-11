@@ -45,7 +45,9 @@ public class TeamService
     }
 
     public MonthlyTeamReportsResponse getMonthlyReports(Date month) {
-        return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAllByMonth(month));
+        return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAll());
+
+//        return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAllByMonth(month));
     }
 
     public WeeklyTeamReportsResponse getWeeklyReports(Long monthReportID)
