@@ -6,9 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tuke.SensorWebApi.server.http.request.ReportRequest;
+import sk.tuke.SensorWebApi.server.http.response.DailyReportsResponse;
+import sk.tuke.SensorWebApi.server.http.response.DailyTeamReportsResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
+import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.ReportService;
 
 import java.util.Date;
@@ -19,11 +22,9 @@ import java.util.List;
 @RequestMapping(value = "/reporting", consumes = "application/json", produces = "application/json")
 public class ReportController {
 
-    @Autowired
-    private ReportService reportService;
-
-    @Autowired
-    private DailyReportRepository dailyReportRepository;
+    @Autowired private ReportService reportService;
+    @Autowired private DailyReportService dailyReportService;
+    @Autowired private DailyReportRepository dailyReportRepository;
 
     @PostMapping(value = "/add")
     public ResponseEntity<HttpStatus> newReport(@RequestBody ReportRequest incomingRequest) {
@@ -37,7 +38,7 @@ public class ReportController {
     }
 
     @GetMapping(value = "/reports/daily/{day}/{teamId}", produces = { MediaType.APPLICATION_JSON_VALUE})
-    public List<DailyReport> dailyReportsByDateAndTeamId(@PathVariable long day, @PathVariable long teamId) {
-        return dailyReportRepository.findAllByDayAndDeskTeamId(new Date(day), teamId);
+    public DailyReportsResponse dailyReportsByDateAndTeamId(@PathVariable long day, @PathVariable long teamId) {
+        return dailyReportService.getAllByDayAndTeamId(new Date(day), teamId);
     }
 }

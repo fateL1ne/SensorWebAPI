@@ -6,12 +6,14 @@ public class RecentActivityResponse
     private int teams;
     private int offices;
     private int activeDesks;
+    private float percents;
 
-    public RecentActivityResponse(int desks, int teams, int offices, int activeDesks) {
+    public RecentActivityResponse(int desks, int teams, int offices, int activeDesks, float percents) {
         this.desks = desks;
         this.teams = teams;
         this.offices = offices;
         this.activeDesks = activeDesks;
+        this.percents = percents;
     }
 
     public int getDesks() {

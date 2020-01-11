@@ -3,6 +3,7 @@ package sk.tuke.SensorWebApi.server.services.report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.http.response.RecentActivityResponse;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.IntervalReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.MonthlyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
@@ -39,6 +40,11 @@ public class ReportService
     }
 
     public RecentActivityResponse getActivity() {
+        return null;
+    }
+
+    public RecentActivityResponse generatePreview()
+    {
         return null;
     }
 

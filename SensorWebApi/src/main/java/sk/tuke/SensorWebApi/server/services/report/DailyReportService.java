@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.http.response.DailyReportsResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
@@ -60,8 +61,8 @@ public class DailyReportService
     }
 
 
-    public List<DailyReport> getAllByDayAndTeamId(Date day, long teamId) {
-        return dailyReportRepository.findAllByDayAndDeskTeamId(day, teamId);
+    public DailyReportsResponse getAllByDayAndTeamId(Date day, long teamId) {
+        return new DailyReportsResponse(dailyReportRepository.findAllByDayAndDeskTeamId(day, teamId));
     }
 
     public void generateTeamReport(Team team, Date day)
