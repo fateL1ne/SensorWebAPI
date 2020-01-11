@@ -37,7 +37,7 @@ public class ReportController {
     }
 
     @GetMapping(value = "/reports/daily/{day}/{teamId}", produces = { MediaType.APPLICATION_JSON_VALUE})
-    public List<DailyReport> dailyReportsByDateAndTeamId(@PathVariable Date day, @PathVariable long teamId) {
-        return dailyReportRepository.findAllByDayAndDeskTeamId(day, teamId);
+    public List<DailyReport> dailyReportsByDateAndTeamId(@PathVariable long day, @PathVariable long teamId) {
+        return dailyReportRepository.findAllByDayAndDeskTeamId(new Date(day), teamId);
     }
 }
