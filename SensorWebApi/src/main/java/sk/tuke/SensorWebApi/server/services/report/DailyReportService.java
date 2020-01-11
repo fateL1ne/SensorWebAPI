@@ -60,6 +60,10 @@ public class DailyReportService
     }
 
 
+    public List<DailyReport> getAllByDayAndTeamId(Date day, long teamId) {
+        return dailyReportRepository.findAllByDayAndDeskTeamId(day, teamId);
+    }
+
     public void generateTeamReport(Team team, Date day)
     {
         float occupation = 0.00f;

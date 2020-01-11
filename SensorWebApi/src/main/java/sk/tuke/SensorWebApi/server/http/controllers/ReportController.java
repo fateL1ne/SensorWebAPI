@@ -35,4 +35,9 @@ public class ReportController {
     public List<DailyReport> teamNames(@PathVariable Date day, @PathVariable Team team) {
         return dailyReportRepository.findAllByDayAndDesk_Team(day, team);
     }
+
+    @GetMapping(value = "/reports/daily/{day}/{teamId}", produces = { MediaType.APPLICATION_JSON_VALUE})
+    public List<DailyReport> dailyReportsByDateAndTeamId(@PathVariable Date day, @PathVariable long teamId) {
+        return dailyReportRepository.findAllByDayAndDeskTeamId(day, teamId);
+    }
 }
