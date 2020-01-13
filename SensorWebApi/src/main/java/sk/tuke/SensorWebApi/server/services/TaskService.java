@@ -87,16 +87,16 @@ public class TaskService
         allTeams.forEach( team -> monthlyReportService.generateTeamReport(startOfMonth, endOfMonth, team));
     }
 
-    @Scheduled(cron = "0 * * * * *", zone = "Europe/Bratislava")
-    public void generateMonthlySuggestions() {
-        logger.info("Generating monthly suggestions");
-
-        Date startOfMonth = dateService.getStartOfLastMonth();
-        Date endOfMonth = dateService.getEndOfLastMonth();
-        List<Office> allOffices = officeRepository.findAll();
-
-        allOffices.forEach( office -> suggestionService.generateOfficeSuggestion(office, startOfMonth, endOfMonth));
-    }
+//    @Scheduled(cron = "0 * * * * *", zone = "Europe/Bratislava")
+//    public void generateMonthlySuggestions() {
+//        logger.info("Generating monthly suggestions");
+//
+//        Date startOfMonth = dateService.getStartOfLastMonth();
+//        Date endOfMonth = dateService.getEndOfLastMonth();
+//        List<Office> allOffices = officeRepository.findAll();
+//
+//        allOffices.forEach( office -> suggestionService.generateOfficeSuggestion(office, startOfMonth, endOfMonth));
+//    }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {
