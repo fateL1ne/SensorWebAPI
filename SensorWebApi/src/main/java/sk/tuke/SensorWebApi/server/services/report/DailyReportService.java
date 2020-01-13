@@ -13,7 +13,7 @@ import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
-import sk.tuke.SensorWebApi.server.services.core.TimelineService;
+import sk.tuke.SensorWebApi.server.services.suggestion.TimelineService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.Report;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.ReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
 import sk.tuke.SensorWebApi.server.services.helpers.DateService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
 import sk.tuke.SensorWebApi.server.services.report.WeeklyReportService;
+import sk.tuke.SensorWebApi.server.services.suggestion.SuggestionService;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +35,8 @@ public class TaskService
     @Autowired private WeeklyReportService weeklyReportService;
     @Autowired private TeamRepository teamRepository;
     @Autowired private MonthlyReportService monthlyReportService;
-
+    @Autowired private OfficeRepository officeRepository;
+    @Autowired private SuggestionService suggestionService;
 
 
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
@@ -83,6 +87,16 @@ public class TaskService
         allTeams.forEach( team -> monthlyReportService.generateTeamReport(startOfMonth, endOfMonth, team));
     }
 
+    @Scheduled(cron = "0 * * * * *", zone = "Europe/Bratislava")
+    public void generateMonthlySuggestions() {
+        logger.info("Generating monthly suggestions");
+
+        Date startOfMonth = dateService.getStartOfLastMonth();
+        Date endOfMonth = dateService.getEndOfLastMonth();
+        List<Office> allOffices = officeRepository.findAll();
+
+        allOffices.forEach( office -> suggestionService.generateOfficeSuggestion(office, startOfMonth, endOfMonth));
+    }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {

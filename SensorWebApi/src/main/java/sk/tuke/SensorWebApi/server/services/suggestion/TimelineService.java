@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.core;
+package sk.tuke.SensorWebApi.server.services.suggestion;
 
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
@@ -11,7 +11,8 @@ public class TimelineService
 {
     private static final int BIT_SHIFT = 0x01;
 
-    public long generateTimeline(List<Report> reports) {
+    public long generateTimeline(List<Report> reports)
+    {
         long timeline = 0;
         long bit_mask = 1;
 
@@ -24,11 +25,20 @@ public class TimelineService
         return timeline;
     }
 
-    /**
-     * coming soon (:
-     */
+    long getAverageDailyTimeline(List<DailyReport> dailyReports)
+    {
+        long averageTimeline = 0;
 
-    public void findGaps(List<DailyReport> dailyReports) {
+        for(DailyReport dailyReport : dailyReports) {
+            averageTimeline |= dailyReport.getTimeline();
+        }
 
+        return averageTimeline;
     }
+
+
+    int gaps(long t1, long t2) {
+        return Long.numberOfLeadingZeros(t1 ^ t2);
+    }
+
 }

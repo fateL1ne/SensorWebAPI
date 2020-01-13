@@ -12,6 +12,7 @@ public interface DailyReportRepository extends JpaRepository<DailyReport, Long> 
     List<DailyReport> findAllByDayBetweenAndDesk(Date startWeek, Date endWeek, Desk desk);
     List<DailyReport> findAllByDayBetweenAndDesk_Team(Date startWeek, Date endWeek, Team team);
     List<DailyReport> findAllByDay(Date day);
+    DailyReport findByDayAndDesk(Date day, Desk desk);
     List<DailyReport> findAllByDayAndDesk_Team(Date day, Team team);
     List<DailyReport> findAllByDayBetween(Date startWeek, Date endWeek);
     List<DailyReport> findAllByDayAndDeskTeamId(Date day, long teamId);
