@@ -45,13 +45,14 @@ public class SuggestionService
     private void generateSuggestion(Office office, Date startOfMonth, Date endOfMonth, Date dayDate, Day day, List<Desk> desks)
     {
         Graph<GraphVertex> graph = generateDailyGraph(dayDate, endOfMonth, desks);
-        Graph.Edge<GraphVertex> edge;
+        Edge<GraphVertex> edge;
 
-        while( (edge = graph.pop()) != null) {
-            suggestionRepository.save(new Suggestion( edge.source.getDesk(),
-                    edge.destination.getDesk(),
-                    edge.source.getAverageTimeline(),
-                    edge.destination.getAverageTimeline(),
+        while( (edge = graph.pop()) != null )
+        {
+            suggestionRepository.save(new Suggestion(edge.getSource().getDesk(),
+                    edge.getDestination().getDesk(),
+                    edge.getSource().getAverageTimeline(),
+                    edge.getDestination().getAverageTimeline(),
                     office,
                     startOfMonth,
                     day.getName()
@@ -68,7 +69,7 @@ public class SuggestionService
         desks.forEach( desk -> {
             GraphVertex graphVertex = generateGraphVertex(day, endOfMonth, desk);
             deskGraphVertexMap.put(desk, graphVertex);
-            graph.addVertex(generateGraphVertex(day, endOfMonth, desk));
+            graph.addVertex(graphVertex);
         });
 
         int desks_size = desks.size();

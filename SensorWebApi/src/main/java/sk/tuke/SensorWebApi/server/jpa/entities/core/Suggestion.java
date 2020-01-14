@@ -10,12 +10,14 @@ public class Suggestion
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column (name = "desk1", nullable = false)
+    @ManyToOne
+    @JoinColumn (name = "desk1", nullable = false)
     private Desk desk1;
 
-    @Column (name = "desk2", nullable = false)
+    @ManyToOne
+    @JoinColumn (name = "desk2", nullable = false)
     private Desk desk2;
 
     @Column (name = "desk1_timeline", nullable = false)
@@ -24,7 +26,8 @@ public class Suggestion
     @Column (name = "desk2_timeline", nullable = false)
     private long timeline2;
 
-    @Column (name = "office", nullable = false)
+    @ManyToOne
+    @JoinColumn (name = "office", nullable = false)
     private Office office;
 
     @Column (name = "month", nullable =  false)
@@ -32,6 +35,7 @@ public class Suggestion
 
     @Column (name = "day", nullable = false)
     private String day;
+
 
     public Suggestion(Desk desk1, Desk desk2, long timeline1, long timeline2, Office office, Date month, String day) {
         this.desk1 = desk1;
@@ -61,12 +65,11 @@ public class Suggestion
 
     public Suggestion() { }
 
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -109,4 +112,5 @@ public class Suggestion
     public void setOffice(Office office) {
         this.office = office;
     }
+
 }

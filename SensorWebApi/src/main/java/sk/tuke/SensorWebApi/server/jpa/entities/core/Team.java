@@ -1,12 +1,13 @@
 package sk.tuke.SensorWebApi.server.jpa.entities.core;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Team")
-public class Team
+public class Team implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

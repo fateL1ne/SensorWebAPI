@@ -7,24 +7,17 @@ public class GraphVertex
     private Desk desk;
     private long averageTimeline;
 
-    public GraphVertex(Desk desk, long averageTimeline) {
+    GraphVertex(Desk desk, long averageTimeline)
+    {
         this.desk = desk;
         this.averageTimeline = averageTimeline;
     }
 
-    public Desk getDesk() {
-        return desk;
-    }
+    public Desk getDesk() { return desk; }
 
-    public void setDesk(Desk desk) {
-        this.desk = desk;
-    }
+    public void setDesk(Desk desk) { this.desk = desk; }
 
-    public long getAverageTimeline() {
-        return averageTimeline;
-    }
+    long getAverageTimeline() { return averageTimeline; }
 
-    public void setAverageTimeline(long averageTimeline) {
-        this.averageTimeline = averageTimeline;
-    }
+    public void setAverageTimeline(long averageTimeline) { this.averageTimeline = averageTimeline; }
 }
