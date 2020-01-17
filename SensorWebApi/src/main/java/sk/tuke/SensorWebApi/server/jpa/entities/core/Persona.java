@@ -15,6 +15,15 @@ public class Persona
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column (name = "firstName", nullable = false, length = 30)
+    private String firstName;
+
+    @Column (name = "lastName", nullable = false, length = 30)
+    private String lastName;
+
+    @Column (name = "active", nullable = false, length = 30)
+    private boolean active;
+
     @Column (name = "username", nullable = false, length = 30)
     private String username;
 
@@ -30,6 +39,9 @@ public class Persona
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + SECRET_PASS + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", active='" + active + '\'' +
                 '}';
     }
 
@@ -41,6 +53,30 @@ public class Persona
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getUsername() {
