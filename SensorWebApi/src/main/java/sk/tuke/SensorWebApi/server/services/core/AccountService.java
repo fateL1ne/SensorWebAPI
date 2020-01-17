@@ -19,12 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class AccountService
 {
-    private UserRepository userRepository;
-
     @Autowired
-    public AccountService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Transactional
     public AccountsResponse fetchAll() {
