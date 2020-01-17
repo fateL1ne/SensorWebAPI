@@ -3,13 +3,13 @@ package sk.tuke.SensorWebApi.server.services.core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.http.request.NewAccount;
 import sk.tuke.SensorWebApi.server.http.response.AccountsResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Persona;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.UserRepository;
-import sk.tuke.SensorWebApi.server.security.SecurityConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,12 +20,10 @@ import java.util.stream.Collectors;
 public class AccountService
 {
     private UserRepository userRepository;
-    private SecurityConfiguration securityConfiguration;
 
     @Autowired
-    public AccountService(UserRepository userRepository, SecurityConfiguration securityConfiguration) {
+    public AccountService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.securityConfiguration = securityConfiguration;
     }
 
     @Transactional
@@ -59,7 +57,7 @@ public class AccountService
         newDbPersona.setUsername(newAccount.getUsername());
 
         // get password encoder from security context
-        PasswordEncoder passwordEncoder = securityConfiguration.getPasswordEncoder();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // hash password
         newDbPersona.setPassword(passwordEncoder.encode(newAccount.getPassword()));
 
