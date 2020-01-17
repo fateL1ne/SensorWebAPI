@@ -11,7 +11,6 @@ import sk.tuke.SensorWebApi.server.http.response.AccountsResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Persona;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +21,8 @@ public class AccountService
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
+    public AccountService() {}
+
     public AccountsResponse fetchAll() {
         List<Persona> all = userRepository.findAll();
 
@@ -30,7 +30,6 @@ public class AccountService
         return new AccountsResponse(all.stream().filter(Persona::isActive).collect(Collectors.toList()));
     }
 
-    @Transactional
     public ResponseEntity createAccount(NewAccount newAccount) {
         if(!newAccount.isValid()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -66,7 +65,6 @@ public class AccountService
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Transactional
     public ResponseEntity deleteAccount(Long accountId) {
         Optional<Persona> account = userRepository.findById(accountId);
 
