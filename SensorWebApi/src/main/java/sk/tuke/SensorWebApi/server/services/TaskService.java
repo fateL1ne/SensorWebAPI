@@ -90,7 +90,7 @@ public class TaskService
     }
 
 
-    @Scheduled(cron = "0/30 * * * * *", zone = "Europe/Bratislava")
+//    @Scheduled(cron = "0 * * * * *", zone = "Europe/Bratislava")
 //    @Scheduled(cron = "0 0 2 1 * *", zone = "Europe/Bratislava")
     public void generateMonthlySuggestions() {
         logger.info("Generating monthly suggestions");

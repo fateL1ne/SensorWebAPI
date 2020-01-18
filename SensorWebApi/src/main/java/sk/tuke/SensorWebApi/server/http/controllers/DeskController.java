@@ -4,12 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import sk.tuke.SensorWebApi.server.http.request.NewDesk;
 import sk.tuke.SensorWebApi.server.http.request.PutDeskRequest;
 import sk.tuke.SensorWebApi.server.http.response.DeskResponse;
 import sk.tuke.SensorWebApi.server.http.response.DesksResponse;
+import sk.tuke.SensorWebApi.server.http.response.SuggestionResponse;
 import sk.tuke.SensorWebApi.server.services.core.DeskService;
+import sk.tuke.SensorWebApi.server.services.suggestion.desks.SuggestionService;
+
+import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -18,6 +24,12 @@ import sk.tuke.SensorWebApi.server.services.core.DeskService;
 public class DeskController
 {
     @Autowired private DeskService deskService;
+    @Autowired private SuggestionService suggestionService;
+
+    @GetMapping(value = "/suggestions/{month}/{day}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public List<SuggestionResponse> getSuggestions(@PathVariable Long month, @PathVariable String day) {
+        return suggestionService.getSuggestionsByMonthAndDay(new Date(month), day);
+    }
 
     @GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
     public DesksResponse getAllDesks() {

@@ -3,6 +3,7 @@ package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.http.response.SuggestionResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Suggestion;
@@ -25,6 +26,22 @@ public class SuggestionService
     private final long WEEK = DAY * 7;
     private final int TOTAL_DAYS = 7;
 
+
+    public List<SuggestionResponse> getSuggestionsByMonthAndDay(Date month, String day) {
+        List<SuggestionResponse> suggestionResponses = new ArrayList<>();
+        List<Suggestion> suggestions = suggestionRepository.findAllByMonthAndDay(month, day);
+
+        suggestions.forEach( suggestion -> suggestionResponses.add(new SuggestionResponse(
+                suggestion.getDesk1(),
+                suggestion.getTimeline1(),
+                suggestion.getDesk2(),
+                suggestion.getTimeline2(),
+                suggestion.getDay(),
+                suggestion.getMonth()
+        )));
+
+        return suggestionResponses;
+    }
 
     public void generateOfficeSuggestion(Office office, Date startOfMonth, Date endOfMonth)
     {
@@ -56,7 +73,6 @@ public class SuggestionService
             ));
         }
     }
-
 
     private Graph<GraphVertex> generateDailyGraph(Date day, Date endOfMonth, List<Desk> desks)
     {

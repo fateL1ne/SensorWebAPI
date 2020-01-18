@@ -1,6 +1,7 @@
 package sk.tuke.SensorWebApi.server.http.response;
 
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class SuggestionResponse
     private String desk2Team;
     private String day;
     private Date month;
+    private String officeName;
 
 
     public SuggestionResponse(Desk desk1, long desk1Timeline, Desk desk2, long desk2Timeline, String day, Date month)
@@ -26,6 +28,15 @@ public class SuggestionResponse
         this.desk2Team = desk2.getTeam().getTeamName();
         this.day = day;
         this.month = month;
+        this.officeName = desk1.getOffice().getOfficeName();
+    }
+
+    public String getOfficeName() {
+        return officeName;
+    }
+
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
     }
 
     public String getDesk1Team() {
