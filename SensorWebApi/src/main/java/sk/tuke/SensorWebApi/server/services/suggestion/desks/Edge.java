@@ -1,6 +1,6 @@
 package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
-class Edge<V>
+class Edge<V> implements Comparable<Edge>
 {
     private V source;
     private V destination;
@@ -33,5 +33,11 @@ class Edge<V>
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+
+    @Override
+    public int compareTo(Edge edge) {
+        return Integer.valueOf(this.weight).compareTo(edge.getWeight());
     }
 }

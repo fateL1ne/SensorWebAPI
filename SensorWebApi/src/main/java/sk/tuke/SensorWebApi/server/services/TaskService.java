@@ -89,15 +89,22 @@ public class TaskService
         allTeams.forEach( team -> monthlyReportService.generateTeamReport(startOfMonth, endOfMonth, team));
     }
 
-    @Scheduled(cron = "0 0 2 1 * *", zone = "Europe/Bratislava")
+
+    @Scheduled(cron = "0/30 * * * * *", zone = "Europe/Bratislava")
+//    @Scheduled(cron = "0 0 2 1 * *", zone = "Europe/Bratislava")
     public void generateMonthlySuggestions() {
         logger.info("Generating monthly suggestions");
 
         Date startOfMonth = dateService.getSpecificDay(2019, 1, 1);
         Date endOfMonth = dateService.getSpecificDay(2019, 2, 0);
-        List<Team> teams = teamRepository.findAll();
 
-        teams.forEach( team ->  teamStatsService.generateTeamStats(startOfMonth, endOfMonth, team));
+        List<Office> offices = officeRepository.findAll();
+
+        offices.forEach( office -> suggestionService.generateOfficeSuggestion(office, startOfMonth, endOfMonth));
+
+//        List<Team> teams = teamRepository.findAll();
+//
+//        teams.forEach( team ->  teamStatsService.generateTeamStats(startOfMonth, endOfMonth, team));
     }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")

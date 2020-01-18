@@ -10,7 +10,6 @@ import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.SuggestionRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
-import sk.tuke.SensorWebApi.server.services.helpers.DateService;
 
 import java.util.*;
 
@@ -21,8 +20,6 @@ public class SuggestionService
     @Autowired private DailyReportRepository dailyReportRepository;
     @Autowired private TimelineService timelineService;
     @Autowired private SuggestionRepository suggestionRepository;
-    @Autowired private DateService dateService;
-
 
     private final long DAY = 24 * 60 * 60 * 1000;
     private final long WEEK = DAY * 7;
@@ -47,7 +44,7 @@ public class SuggestionService
         Graph<GraphVertex> graph = generateDailyGraph(dayDate, endOfMonth, desks);
         Edge<GraphVertex> edge;
 
-        while( (edge = graph.pop()) != null )
+        while( (edge = graph.popEdge()) != null )
         {
             suggestionRepository.save(new Suggestion(edge.getSource().getDesk(),
                     edge.getDestination().getDesk(),

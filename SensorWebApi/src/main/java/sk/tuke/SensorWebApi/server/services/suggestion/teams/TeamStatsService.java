@@ -1,8 +1,6 @@
 package sk.tuke.SensorWebApi.server.services.suggestion.teams;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;

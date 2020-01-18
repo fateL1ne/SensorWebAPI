@@ -10,6 +10,7 @@ class Graph<V>
 {
     private final Logger logger = LoggerFactory.getLogger(Graph.class);
     private Map<V, List<Edge<V>>> nodes = new HashMap<>();
+    private List<Edge<V>> edges = new ArrayList<>();
 
     void addVertex(V vertex)
     {
@@ -29,8 +30,8 @@ class Graph<V>
         }
 
         Edge<V> edge = new Edge<>(source, destination, weight);
-
         nodes.get(source).add(edge);
+        edges.add(edge);
     }
 
     void deleteVertex(V v)
@@ -49,38 +50,20 @@ class Graph<V>
 
         deleteVertex(edge.getDestination());
         deleteVertex(edge.getSource());
-
     }
 
 
 
-    Edge<V> pop()
+    Edge<V> popEdge()
     {
-        Edge<V> hEdge = new Edge<>(null, null, 0x00);
-        Edge<V> cEdge;
+        Collections.sort(edges);
 
-        if (nodes.size() <= 1) {
-            return null;
-        }
+        if (edges.size() == 0) return null;
 
-        for (V vertex : nodes.keySet())
-        {
-            if (nodes.get(vertex).isEmpty()) {
-                continue;
-            }
-
-            cEdge = getHighestEdge(nodes.get(vertex));
-
-            if (hEdge.getWeight() < cEdge.getWeight()) {
-                hEdge = cEdge;
-            }
-        }
-
-        deleteEdge(hEdge);
-        stringify();
-
-        return hEdge;
+        return edges.remove(0);
     }
+
+
 
 
     void stringify()
