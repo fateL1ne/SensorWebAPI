@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sk.tuke.SensorWebApi.server.http.response.DailyTeamReportsResponse;
-import sk.tuke.SensorWebApi.server.http.response.MonthlyTeamReportsResponse;
-import sk.tuke.SensorWebApi.server.http.response.TeamsResponse;
-import sk.tuke.SensorWebApi.server.http.response.WeeklyTeamReportsResponse;
+import sk.tuke.SensorWebApi.server.http.response.*;
 import sk.tuke.SensorWebApi.server.services.helpers.MockService;
 import sk.tuke.SensorWebApi.server.services.core.TeamService;
 
@@ -42,6 +39,9 @@ public class TeamController {
 
     @GetMapping(value = "/dailyReports/{weekReportID}", produces = { MediaType.APPLICATION_JSON_VALUE})
     public DailyTeamReportsResponse getDailyReports(@PathVariable Long weekReportID) { return teamService.getDailyReports(weekReportID); }
+
+    @GetMapping(value = "/monthlyStats/{month}", produces = { MediaType.APPLICATION_JSON_VALUE})
+    public List<MonthlyTeamStatsResponse> getMonthlyStats(@PathVariable Long month) { return teamService.getMonthlyStats(new Date(month)); }
 
     @GetMapping(value = "/dummy")
     public void dummy() { mockService.init(); }

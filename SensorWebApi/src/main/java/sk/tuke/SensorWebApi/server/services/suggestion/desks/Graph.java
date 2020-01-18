@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.suggestion;
+package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

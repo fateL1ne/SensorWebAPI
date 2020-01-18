@@ -17,7 +17,8 @@ import sk.tuke.SensorWebApi.server.services.helpers.DateService;
 import sk.tuke.SensorWebApi.server.services.report.DailyReportService;
 import sk.tuke.SensorWebApi.server.services.report.MonthlyReportService;
 import sk.tuke.SensorWebApi.server.services.report.WeeklyReportService;
-import sk.tuke.SensorWebApi.server.services.suggestion.SuggestionService;
+import sk.tuke.SensorWebApi.server.services.suggestion.desks.SuggestionService;
+import sk.tuke.SensorWebApi.server.services.suggestion.teams.TeamStatsService;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,7 @@ public class TaskService
     @Autowired private MonthlyReportService monthlyReportService;
     @Autowired private OfficeRepository officeRepository;
     @Autowired private SuggestionService suggestionService;
+    @Autowired private TeamStatsService teamStatsService;
 
 
     @Scheduled(cron = "0 5 0 * * *", zone = "Europe/Bratislava")
@@ -87,16 +89,16 @@ public class TaskService
         allTeams.forEach( team -> monthlyReportService.generateTeamReport(startOfMonth, endOfMonth, team));
     }
 
-//    @Scheduled(cron = "0 * * * * *", zone = "Europe/Bratislava")
-//    public void generateMonthlySuggestions() {
-//        logger.info("Generating monthly suggestions");
-//
-//        Date startOfMonth = dateService.getStartOfLastMonth();
-//        Date endOfMonth = dateService.getEndOfLastMonth();
-//        List<Office> allOffices = officeRepository.findAll();
-//
-//        allOffices.forEach( office -> suggestionService.generateOfficeSuggestion(office, startOfMonth, endOfMonth));
-//    }
+    @Scheduled(cron = "0 0 2 1 * *", zone = "Europe/Bratislava")
+    public void generateMonthlySuggestions() {
+        logger.info("Generating monthly suggestions");
+
+        Date startOfMonth = dateService.getSpecificDay(2019, 1, 1);
+        Date endOfMonth = dateService.getSpecificDay(2019, 2, 0);
+        List<Team> teams = teamRepository.findAll();
+
+        teams.forEach( team ->  teamStatsService.generateTeamStats(startOfMonth, endOfMonth, team));
+    }
 
     @Scheduled(cron = "0 0/30 * * * *", zone = "Europe/Bratislava")
     public void mockReport() {

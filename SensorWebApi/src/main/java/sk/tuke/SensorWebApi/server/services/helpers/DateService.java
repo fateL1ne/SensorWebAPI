@@ -3,6 +3,7 @@ package sk.tuke.SensorWebApi.server.services.helpers;
 
 import com.github.rkumsher.date.DateUtils;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.services.suggestion.desks.Day;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Locale;
 @Service
 public class DateService {
 
+    private final Day[] days = { Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY, Day.SATURDAY, Day.SUNDAY };
     private final long DAY = 24 * 60 * 60 * 1000;
     private final Calendar calendar = Calendar.getInstance(new Locale("en","UK"));
 
@@ -37,6 +39,21 @@ public class DateService {
         calendar.setTime(new Date(System.currentTimeMillis()));
 
         return DateUtils.atStartOfDay(startOfLastWeek);
+    }
+
+
+    public Date getFirstDayDate(Date month, int day) {
+        calendar.setTime(month);
+        calendar.set(Calendar.WEEK_OF_MONTH, 1);
+        calendar.set(Calendar.DAY_OF_WEEK, day);
+
+        return calendar.getTime();
+    }
+
+    public Day getDay(Date date) {
+        calendar.setTime(date);
+
+        return days[calendar.get(Calendar.DAY_OF_WEEK)];
     }
 
     public Date getEndOfLastWeek() {

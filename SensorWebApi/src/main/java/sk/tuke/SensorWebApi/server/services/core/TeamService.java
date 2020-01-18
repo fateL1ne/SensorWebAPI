@@ -5,14 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sk.tuke.SensorWebApi.server.http.response.DailyTeamReportsResponse;
-import sk.tuke.SensorWebApi.server.http.response.MonthlyTeamReportsResponse;
-import sk.tuke.SensorWebApi.server.http.response.TeamsResponse;
-import sk.tuke.SensorWebApi.server.http.response.WeeklyTeamReportsResponse;
+import sk.tuke.SensorWebApi.server.http.response.*;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.Team;
+import sk.tuke.SensorWebApi.server.jpa.entities.core.WeightTimeline;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.DailyTeamReport;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamAttendance;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.MonthlyTeamReport;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.team.WeeklyTeamReport;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.WeightTimelineRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.DailyTeamReportRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamAttendanceRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.MonthlyTeamReportRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.TeamRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.team.WeeklyTeamReportRepository;
@@ -34,15 +36,34 @@ public class TeamService
     @Autowired private DailyTeamReportRepository dailyTeamReportRepository;
     @Autowired private MonthlyTeamReportRepository monthlyTeamReportRepository;
     @Autowired private WeeklyTeamReportRepository weeklyTeamReportRepository;
+    @Autowired private MonthlyTeamAttendanceRepository monthlyTeamAttendanceRepository;
+    @Autowired private WeightTimelineRepository weightTimelineRepository;
 
     public TeamsResponse fetchAll() {
         return new TeamsResponse(teamRepository.findAll());
     }
 
 
+    public List<MonthlyTeamStatsResponse> getMonthlyStats(Date month)
+    {
+        List<MonthlyTeamStatsResponse> monthlyTeamStatsResponses = new ArrayList<>();
+        List<MonthlyTeamAttendance> monthlyTeamAttendances = monthlyTeamAttendanceRepository.getAllByMonth(month);
+
+        monthlyTeamAttendances.forEach( monthlyTeamAttendance ->
+        {
+            List<WeightTimeline> weightTimelines = weightTimelineRepository.getAllByMonthlyTeamAttendance(monthlyTeamAttendance);
+            Team team = monthlyTeamAttendance.getTeam();
+            monthlyTeamStatsResponses.add( new MonthlyTeamStatsResponse(monthlyTeamAttendance.getId(), team, weightTimelines));
+        });
+
+        return monthlyTeamStatsResponses;
+    }
+
     public DailyTeamReportsResponse getDailyTeamReports(Date day) {
         return new DailyTeamReportsResponse(dailyTeamReportRepository.findAllByDay(DateUtils.atStartOfDay(day)));
     }
+
+
 
     public MonthlyTeamReportsResponse getMonthlyReports(Date month) {
         return new MonthlyTeamReportsResponse(monthlyTeamReportRepository.findAll());

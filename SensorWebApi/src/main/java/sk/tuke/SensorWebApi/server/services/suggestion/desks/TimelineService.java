@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.suggestion;
+package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 import org.springframework.stereotype.Service;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;

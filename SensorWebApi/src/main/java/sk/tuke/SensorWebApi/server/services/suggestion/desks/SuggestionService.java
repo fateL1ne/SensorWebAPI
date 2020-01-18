@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.suggestion;
+package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class SuggestionService
 {
     @Autowired private DeskRepository deskRepository;
     @Autowired private DailyReportRepository dailyReportRepository;
-    @Autowired private DateService dateService;
     @Autowired private TimelineService timelineService;
     @Autowired private SuggestionRepository suggestionRepository;
+    @Autowired private DateService dateService;
 
 
     private final long DAY = 24 * 60 * 60 * 1000;

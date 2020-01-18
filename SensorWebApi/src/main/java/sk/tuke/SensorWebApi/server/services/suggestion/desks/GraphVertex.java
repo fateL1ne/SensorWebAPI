@@ -1,4 +1,4 @@
-package sk.tuke.SensorWebApi.server.services.suggestion;
+package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 
