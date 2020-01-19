@@ -21,7 +21,11 @@ public class MonthlyTeamStatsResponse
         this.teamDesks = team.getDesks().size();
         this.teamLeader = team.getLeader();
         weightTimelines.forEach( weightTimeline -> {
-            this.weightTimelineResponseList.add(new WeightTimelineResponse(weightTimeline.getId(), weightTimeline.getDay(), weightTimeline.getWeights()));
+            this.weightTimelineResponseList.add(new WeightTimelineResponse(
+                    weightTimeline.getId(),
+                    weightTimeline.getDay(),
+                    weightTimeline.getWeights(),
+                    teamDesks * 4));
         });
     }
 

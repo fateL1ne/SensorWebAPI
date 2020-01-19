@@ -1,16 +1,28 @@
 package sk.tuke.SensorWebApi.server.http.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WeightTimelineResponse
 {
     private Long Id;
     private String day;
     private int[] weights;
+    private List<String> timelineColors = new ArrayList<>();
+    private final String[] colors = {"#b3ff66", "#a6ff4d", "#8cff1a" , "#80ff00" , "#73e600" ,"#66cc00" ,"#59b300" ,"#4d9900" ,"#336600" ,"#264d00"};
 
 
-    public WeightTimelineResponse(Long id, String day, String weights) {
+    public WeightTimelineResponse(Long id, String day, String weights, int maxWeight) {
         Id = id;
         this.day = day;
         setWeights(weights);
+        setColors(maxWeight);
+    }
+
+    private void setColors(int maxW) {
+        for(int i =0; i< 48; i++) {
+            timelineColors.add(colors[(weights[i] * 100) / maxW]);
+        }
     }
 
     private void setWeights(String weights) {

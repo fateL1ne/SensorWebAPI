@@ -24,6 +24,9 @@ public class TeamStatsService
     @Autowired private MonthlyTeamAttendanceRepository monthlyTeamAttendanceRepository;
     @Autowired private DateService dateService;
 
+
+
+
     private final Day[] days = { Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY, Day.SATURDAY, Day.SUNDAY };
     private final int DAY_INTERVALS = 48;
     private final long DAY = 24 * 60 * 60 * 1000;

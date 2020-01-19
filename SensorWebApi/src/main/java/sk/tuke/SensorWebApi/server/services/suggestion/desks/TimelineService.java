@@ -27,10 +27,26 @@ public class TimelineService
 
     long getAverageDailyTimeline(List<DailyReport> dailyReports)
     {
+        int size = dailyReports.size() / 2;
         long averageTimeline = 0;
+        long timeline;
+
+        int[] weightTimeline = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, };
 
         for(DailyReport dailyReport : dailyReports) {
-            averageTimeline |= dailyReport.getTimeline();
+            timeline = dailyReport.getTimeline();
+
+            for(int i=0; i < 48; i++) {
+                if( (timeline &(1L << i)) != 0) {
+                    weightTimeline[i]++;
+                }
+            }
+        }
+
+        for(int i=0; i < 48; i++) {
+            if(weightTimeline[i] > size)
+                averageTimeline |= 1L << i;
         }
 
         return averageTimeline;
