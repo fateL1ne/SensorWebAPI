@@ -21,7 +21,7 @@ public class WeightTimelineResponse
 
     private void setColors(int maxW) {
         for(int i =0; i< 48; i++) {
-            timelineColors.add(colors[(weights[i] * 100) / maxW]);
+            timelineColors.add(colors[((weights[i] * 100) / maxW) % 10]);
         }
     }
 
@@ -32,6 +32,22 @@ public class WeightTimelineResponse
         for(int i =0; i< 48; i++) {
             this.weights[i] = Integer.parseInt(strWeights[i]);
         }
+    }
+
+    public void setWeights(int[] weights) {
+        this.weights = weights;
+    }
+
+    public List<String> getTimelineColors() {
+        return timelineColors;
+    }
+
+    public void setTimelineColors(List<String> timelineColors) {
+        this.timelineColors = timelineColors;
+    }
+
+    public String[] getColors() {
+        return colors;
     }
 
     public Long getId() {

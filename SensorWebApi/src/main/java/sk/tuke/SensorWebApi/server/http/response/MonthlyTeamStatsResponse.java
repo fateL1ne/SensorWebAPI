@@ -21,6 +21,7 @@ public class MonthlyTeamStatsResponse
         this.teamDesks = team.getDesks().size();
         this.teamLeader = team.getLeader();
         weightTimelines.forEach( weightTimeline -> {
+            if (teamDesks != 0)
             this.weightTimelineResponseList.add(new WeightTimelineResponse(
                     weightTimeline.getId(),
                     weightTimeline.getDay(),
