@@ -43,7 +43,8 @@ public class SuggestionService
                 suggestion.getDesk2(),
                 suggestion.getTimeline2(),
                 suggestion.getDay(),
-                suggestion.getMonth()
+                suggestion.getMonth(),
+                suggestion.getScore()
         )));
 
         return suggestionResponses;

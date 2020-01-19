@@ -15,9 +15,10 @@ public class SuggestionResponse
     private String day;
     private Date month;
     private String officeName;
+    private int score;
 
 
-    public SuggestionResponse(Desk desk1, long desk1Timeline, Desk desk2, long desk2Timeline, String day, Date month)
+    public SuggestionResponse(Desk desk1, long desk1Timeline, Desk desk2, long desk2Timeline, String day, Date month, int score)
     {
         this.desk1Label = desk1.getLabel();
         this.desk1Timeline = desk1Timeline;
@@ -28,6 +29,7 @@ public class SuggestionResponse
         this.day = day;
         this.month = month;
         this.officeName = desk1.getOffice().getOfficeName();
+        this.score = score;
     }
 
     public String getOfficeName() {

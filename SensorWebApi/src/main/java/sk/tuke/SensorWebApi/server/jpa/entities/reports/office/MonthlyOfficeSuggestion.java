@@ -5,7 +5,6 @@ import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Suggestion;
 
 import javax.persistence.*;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
