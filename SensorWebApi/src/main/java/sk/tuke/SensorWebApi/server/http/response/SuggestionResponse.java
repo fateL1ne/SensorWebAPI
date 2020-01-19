@@ -7,10 +7,10 @@ import java.util.Date;
 public class SuggestionResponse
 {
     private String desk1Label;
-    private long desk1Timeline;
+    private int[] desk1Timeline;
     private String desk1Team;
     private String desk2label;
-    private long desk2Timeline;
+    private int[] desk2Timeline;
     private String desk2Team;
     private String day;
     private Date month;
@@ -21,15 +21,35 @@ public class SuggestionResponse
     public SuggestionResponse(Desk desk1, long desk1Timeline, Desk desk2, long desk2Timeline, String day, Date month, int score)
     {
         this.desk1Label = desk1.getLabel();
-        this.desk1Timeline = desk1Timeline;
         this.desk1Team = desk1.getTeam().getTeamName();
         this.desk2label = desk2.getLabel();
-        this.desk2Timeline = desk2Timeline;
         this.desk2Team = desk2.getTeam().getTeamName();
         this.day = day;
         this.month = month;
         this.officeName = desk1.getOffice().getOfficeName();
         this.score = score;
+    }
+
+
+    private void generateTimeline(long timeline1, long timeline2) {
+        desk1Timeline = new int[48];
+        desk2Timeline = new int[48];
+
+        for(int i =0; i< 48; i++)
+        {
+            if(((timeline1) & (1L << i)) != 0) {
+                desk1Timeline[i] = 1;
+            } else {
+                desk1Timeline[i] = 0;
+            }
+
+            if(((timeline2) & (1L << i)) != 0) {
+                desk2Timeline[i] = 1;
+            } else {
+                desk2Timeline[i] = 0;
+            }
+        }
+
     }
 
     public String getOfficeName() {
@@ -64,13 +84,7 @@ public class SuggestionResponse
         this.desk1Label = desk1Label;
     }
 
-    public long getDesk1Timeline() {
-        return desk1Timeline;
-    }
 
-    public void setDesk1Timeline(long desk1Timeline) {
-        this.desk1Timeline = desk1Timeline;
-    }
 
     public String getDesk2label() {
         return desk2label;
@@ -80,12 +94,28 @@ public class SuggestionResponse
         this.desk2label = desk2label;
     }
 
-    public long getDesk2Timeline() {
+    public int[] getDesk1Timeline() {
+        return desk1Timeline;
+    }
+
+    public void setDesk1Timeline(int[] desk1Timeline) {
+        this.desk1Timeline = desk1Timeline;
+    }
+
+    public int[] getDesk2Timeline() {
         return desk2Timeline;
     }
 
-    public void setDesk2Timeline(long desk2Timeline) {
+    public void setDesk2Timeline(int[] desk2Timeline) {
         this.desk2Timeline = desk2Timeline;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getDay() {
