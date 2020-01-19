@@ -14,8 +14,6 @@ public class OfficeService {
     @Autowired
     private OfficeRepository officeRepository;
 
-
-
     public List<String> getOfficeNames() {
         List<String> officeNames = new ArrayList<>();
         List<Office> offices = officeRepository.findAll();

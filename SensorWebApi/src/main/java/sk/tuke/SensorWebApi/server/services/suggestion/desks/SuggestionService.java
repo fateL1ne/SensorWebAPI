@@ -3,12 +3,16 @@ package sk.tuke.SensorWebApi.server.services.suggestion.desks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.tuke.SensorWebApi.server.http.response.OfficeSuggestionsResponse;
 import sk.tuke.SensorWebApi.server.http.response.SuggestionResponse;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Desk;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Office;
 import sk.tuke.SensorWebApi.server.jpa.entities.core.Suggestion;
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.office.MonthlyOfficeSuggestion;
 import sk.tuke.SensorWebApi.server.jpa.entities.reports.regular.DailyReport;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.DeskRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeRepository;
+import sk.tuke.SensorWebApi.server.jpa.repositories.models.OfficeSuggestionsRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.models.SuggestionRepository;
 import sk.tuke.SensorWebApi.server.jpa.repositories.reports.regular.DailyReportRepository;
 
@@ -21,6 +25,8 @@ public class SuggestionService
     @Autowired private DailyReportRepository dailyReportRepository;
     @Autowired private TimelineService timelineService;
     @Autowired private SuggestionRepository suggestionRepository;
+    @Autowired private OfficeRepository officeRepository;
+    @Autowired private OfficeSuggestionsRepository officeSuggestionsRepository;
 
     private final long DAY = 24 * 60 * 60 * 1000;
     private final long WEEK = DAY * 7;
@@ -43,35 +49,71 @@ public class SuggestionService
         return suggestionResponses;
     }
 
+
+    public OfficeSuggestionsResponse getOfficesSuggestions(Date month)
+    {
+
+        List<OfficeSuggestionsResponse> officeSuggestionsResponses = new ArrayList<>();
+        List<Office> allOffices = officeRepository.findAll();
+
+        return null;
+
+    }
+
+
     public void generateOfficeSuggestion(Office office, Date startOfMonth, Date endOfMonth)
     {
+        MonthlyOfficeSuggestion monthlyOfficeSuggestion = new MonthlyOfficeSuggestion(office, startOfMonth);
+        officeSuggestionsRepository.save(monthlyOfficeSuggestion);
         List<Desk> desksPerOffice = deskRepository.findAllByOffice(office);
         Day[] days = { Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY, Day.SATURDAY, Day.SUNDAY };
+
         long actualDayMillis = startOfMonth.getTime();
 
         for (int day = 0; day < TOTAL_DAYS; day++)
         {
-            generateSuggestion(office, startOfMonth, endOfMonth, new Date(actualDayMillis), days[day], desksPerOffice);
+            List <Suggestion> suggestions = generateSuggestions(monthlyOfficeSuggestion, office, startOfMonth, endOfMonth, new Date(actualDayMillis), days[day], desksPerOffice);
+            monthlyOfficeSuggestion.addSuggestions(suggestions);
             actualDayMillis += DAY;
         }
+
+        if (monthlyOfficeSuggestion.getSuggestions().size() == 0) {
+            officeSuggestionsRepository.delete(monthlyOfficeSuggestion);
+        } else {
+            officeSuggestionsRepository.save(monthlyOfficeSuggestion);
+
+        }
+
     }
 
-    private void generateSuggestion(Office office, Date startOfMonth, Date endOfMonth, Date dayDate, Day day, List<Desk> desks)
+    private List<Suggestion> generateSuggestions(MonthlyOfficeSuggestion monthlyOfficeSuggestion, Office office, Date startOfMonth, Date endOfMonth, Date dayDate, Day day, List<Desk> desks)
     {
+        List<Suggestion> suggestions = new ArrayList<>();
         Graph<GraphVertex> graph = generateDailyGraph(dayDate, endOfMonth, desks);
         Edge<GraphVertex> edge;
 
         while( (edge = graph.popEdge()) != null )
         {
-            suggestionRepository.save(new Suggestion(edge.getSource().getDesk(),
-                    edge.getDestination().getDesk(),
-                    edge.getSource().getAverageTimeline(),
-                    edge.getDestination().getAverageTimeline(),
-                    office,
-                    startOfMonth,
-                    day.getName()
-            ));
+            Suggestion suggestion = new Suggestion(edge.getWeight(),
+                edge.getSource().getDesk(),
+                edge.getDestination().getDesk(),
+                edge.getSource().getAverageTimeline(),
+                edge.getDestination().getAverageTimeline(),
+                office,
+                startOfMonth,
+                day.getName(),
+                monthlyOfficeSuggestion);
+
+            suggestions.add(suggestion);
         }
+        Collections.sort(suggestions);
+
+        for(int i =0; i < suggestions.size() / 2; i++) {
+            monthlyOfficeSuggestion.addSuggestion(suggestions.get(i));
+            suggestionRepository.save(suggestions.get(i));
+        }
+
+        return suggestions;
     }
 
     private Graph<GraphVertex> generateDailyGraph(Date day, Date endOfMonth, List<Desk> desks)

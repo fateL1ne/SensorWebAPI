@@ -44,6 +44,7 @@ public class TeamStatsService
             WeightTimeline weightTimeline = new WeightTimeline(monthlyTeamAttendance, days[day].getName(), weightsToString(timeline));
             weightTimelineRepository.save(weightTimeline);
         }
+
     }
 
 

@@ -1,12 +1,14 @@
 package sk.tuke.SensorWebApi.server.jpa.entities.core;
 
 
+import sk.tuke.SensorWebApi.server.jpa.entities.reports.office.MonthlyOfficeSuggestion;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "suggestion")
-public class Suggestion
+public class Suggestion implements Comparable<Suggestion>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +38,27 @@ public class Suggestion
     @Column (name = "day", nullable = false)
     private String day;
 
+    @Column (name = "score")
+    private int score;
+
+    @ManyToOne
+    @JoinColumn(name = "monthlyOfficeSuggestion")
+    private MonthlyOfficeSuggestion monthlyOfficeSuggestion;
+
+
+    public Suggestion(int score, Desk desk1, Desk desk2, long timeline1, long timeline2, Office office, Date month, String day, MonthlyOfficeSuggestion monthlyOfficeSuggestion) {
+        this.score = score;
+        this.desk1 = desk1;
+        this.desk2 = desk2;
+        this.timeline1 = timeline1;
+        this.timeline2 = timeline2;
+        this.office = office;
+        this.month = month;
+        this.day = day;
+        this.monthlyOfficeSuggestion = monthlyOfficeSuggestion;
+    }
+
+
 
     public Suggestion(Desk desk1, Desk desk2, long timeline1, long timeline2, Office office, Date month, String day) {
         this.desk1 = desk1;
@@ -46,6 +69,10 @@ public class Suggestion
         this.month = month;
         this.day = day;
     }
+
+
+
+
 
     public Date getMonth() {
         return month;
@@ -113,4 +140,24 @@ public class Suggestion
         this.office = office;
     }
 
+    public MonthlyOfficeSuggestion getMonthlyOfficeSuggestion() {
+        return monthlyOfficeSuggestion;
+    }
+
+    public void setMonthlyOfficeSuggestion(MonthlyOfficeSuggestion monthlyOfficeSuggestion) {
+        this.monthlyOfficeSuggestion = monthlyOfficeSuggestion;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    @Override
+    public int compareTo(Suggestion suggestion) {
+        return Integer.compare(suggestion.getScore(), this.score);
+    }
 }
