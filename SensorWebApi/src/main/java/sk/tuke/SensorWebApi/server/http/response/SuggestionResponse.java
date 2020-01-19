@@ -28,6 +28,7 @@ public class SuggestionResponse
         this.month = month;
         this.officeName = desk1.getOffice().getOfficeName();
         this.score = score;
+        generateTimeline(desk1Timeline, desk2Timeline);
     }
 
 
